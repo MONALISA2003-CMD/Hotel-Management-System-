@@ -1,0 +1,3298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HotelOS Pro — Monalisa Tech Solutions</title>
+<style>
+:root {
+  --bg: #0a0c10;
+  --surface: #111318;
+  --surface2: #181c24;
+  --surface3: #1e2330;
+  --border: #252b38;
+  --border2: #2e3647;
+  --accent: #4f8ef7;
+  --accent2: #7c5cbf;
+  --gold: #e8b84b;
+  --gold2: #f5d07a;
+  --green: #2dd4a0;
+  --red: #f05c6e;
+  --orange: #f5935c;
+  --text: #e8ecf4;
+  --text2: #9aa3b4;
+  --text3: #5f6880;
+  --radius: 10px;
+  --radius2: 16px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --glow: 0 0 20px rgba(79,142,247,0.15);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { height:100%; font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); overflow:hidden; }
+
+/* ---- LOGIN ---- */
+#loginPage {
+  display:flex; align-items:center; justify-content:center; height:100vh;
+  background: radial-gradient(ellipse at 30% 40%, rgba(79,142,247,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 70%, rgba(124,92,191,0.06) 0%, transparent 50%),
+              var(--bg);
+}
+.login-card {
+  background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius2);
+  padding:48px 40px; width:420px; box-shadow:var(--shadow), var(--glow);
+}
+.login-logo { text-align:center; margin-bottom:32px; }
+.login-logo .logo-icon {
+  width:60px; height:60px; background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:14px; margin:0 auto 12px; display:flex; align-items:center; justify-content:center;
+  font-size:28px;
+}
+.login-logo h1 { font-size:22px; font-weight:700; color:var(--text); }
+.login-logo p { font-size:13px; color:var(--text3); margin-top:4px; }
+.form-group { margin-bottom:18px; }
+.form-group label { display:block; font-size:12px; font-weight:600; color:var(--text2); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
+.form-group input, .form-group select {
+  width:100%; padding:11px 14px; background:var(--surface2); border:1px solid var(--border2);
+  border-radius:var(--radius); color:var(--text); font-size:14px; outline:none; transition:.2s;
+}
+.form-group input:focus, .form-group select:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(79,142,247,0.12); }
+.btn { padding:11px 20px; border-radius:var(--radius); border:none; cursor:pointer; font-size:14px; font-weight:600; transition:.2s; }
+.btn-primary { background:var(--accent); color:#fff; width:100%; font-size:15px; padding:13px; }
+.btn-primary:hover { background:#3d7de8; transform:translateY(-1px); }
+.btn-sm { padding:7px 14px; font-size:12px; }
+.btn-secondary { background:var(--surface3); color:var(--text2); border:1px solid var(--border2); }
+.btn-secondary:hover { background:var(--border2); color:var(--text); }
+.btn-success { background:var(--green); color:#0a2e22; }
+.btn-danger { background:var(--red); color:#fff; }
+.btn-warning { background:var(--orange); color:#fff; }
+.btn-gold { background:var(--gold); color:#2a1e00; }
+.login-roles { margin-top:16px; }
+.login-roles p { font-size:12px; color:var(--text3); text-align:center; margin-bottom:10px; }
+.role-badges { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+.role-badge { padding:5px 12px; border-radius:20px; font-size:11px; font-weight:600; cursor:pointer; border:1px solid var(--border2); background:var(--surface2); color:var(--text2); transition:.2s; }
+.role-badge:hover { border-color:var(--accent); color:var(--accent); }
+.login-footer { text-align:center; margin-top:28px; padding-top:20px; border-top:1px solid var(--border); }
+.login-footer p { font-size:11px; color:var(--text3); }
+.login-footer a { color:var(--accent); text-decoration:none; }
+
+/* ---- APP SHELL ---- */
+#appShell { display:none; height:100vh; height:100dvh; flex-direction:column; }
+.topbar {
+  height:56px; background:var(--surface); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; padding:0 12px; gap:10px; flex-shrink:0; z-index:100;
+  position:relative;
+}
+.hamburger-btn {
+  display:none; flex-direction:column; justify-content:center; gap:4px;
+  width:38px; height:38px; background:none; border:none; cursor:pointer; flex-shrink:0;
+  border-radius:var(--radius); padding:0;
+}
+.hamburger-btn:active { background:var(--surface2); }
+.hamburger-btn span { display:block; width:18px; height:2px; background:var(--text2); border-radius:2px; margin:0 auto; }
+.topbar-logo { display:flex; align-items:center; gap:10px; font-size:16px; font-weight:700; flex-shrink:0; }
+.topbar-logo .tl-icon {
+  width:32px; height:32px; background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0;
+}
+.topbar-branch {
+  padding:5px 12px; background:var(--surface2); border:1px solid var(--border2);
+  border-radius:20px; font-size:12px; color:var(--text2); cursor:pointer; flex-shrink:0;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:160px;
+}
+.topbar-search {
+  flex:1; max-width:400px; position:relative; min-width:0;
+}
+.topbar-search input {
+  width:100%; padding:8px 14px 8px 36px; background:var(--surface2); border:1px solid var(--border2);
+  border-radius:var(--radius); color:var(--text); font-size:13px; outline:none; transition:.2s;
+}
+.topbar-search input:focus { border-color:var(--accent); }
+.topbar-search .si { position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--text3); font-size:14px; }
+.topbar-right { margin-left:auto; display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.topbar-clock { font-size:12px; color:var(--text3); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.notif-btn {
+  width:38px; height:38px; border-radius:var(--radius); background:var(--surface2);
+  border:1px solid var(--border2); cursor:pointer; display:flex; align-items:center; justify-content:center;
+  position:relative; font-size:16px; flex-shrink:0;
+}
+.notif-count {
+  position:absolute; top:-4px; right:-4px; background:var(--red); color:#fff;
+  border-radius:10px; font-size:10px; font-weight:700; padding:1px 5px; min-width:16px; text-align:center;
+}
+.user-menu-wrap { position:relative; flex-shrink:0; }
+.user-chip {
+  display:flex; align-items:center; gap:6px; padding:5px 10px 5px 5px;
+  background:var(--surface2); border:1px solid var(--border2); border-radius:20px; cursor:pointer;
+  min-height:38px;
+}
+.user-avatar {
+  width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;
+}
+.user-chip-text { line-height:1.2; }
+.user-chip span { font-size:12px; font-weight:600; }
+.user-role-tag { font-size:10px; color:var(--text3); }
+.chip-caret { font-size:10px; color:var(--text3); margin-left:2px; }
+
+/* ---- ACCOUNT DROPDOWN MENU ---- */
+.account-menu {
+  position:absolute; top:calc(100% + 8px); right:0; width:240px;
+  background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius2);
+  box-shadow:var(--shadow); z-index:220; display:none; overflow:hidden; padding:6px;
+}
+.account-menu.open { display:block; animation:menuDrop .15s ease; }
+@keyframes menuDrop { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+.account-menu-header { display:flex; align-items:center; gap:10px; padding:10px 8px; }
+.account-menu-header .user-avatar { width:38px; height:38px; font-size:14px; }
+.account-menu-name { font-size:13px; font-weight:700; color:var(--text); }
+.account-menu-role { font-size:11px; color:var(--text3); }
+.account-menu-divider { height:1px; background:var(--border); margin:4px 0; }
+.account-menu-label { font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:.6px; padding:6px 10px 4px; }
+.account-menu-item {
+  display:flex; align-items:center; gap:10px; padding:10px; border-radius:var(--radius);
+  cursor:pointer; font-size:13px; font-weight:500; color:var(--text2); transition:.15s; min-height:40px;
+}
+.account-menu-item:hover, .account-menu-item:active { background:var(--surface3); color:var(--text); }
+.account-menu-item .ami { font-size:15px; width:18px; text-align:center; }
+.account-menu-danger { color:var(--red); }
+.account-menu-danger:hover { background:rgba(240,92,110,0.1); color:var(--red); }
+.account-menu-item.role-active { background:rgba(79,142,247,0.12); color:var(--accent); }
+
+/* ---- SIDEBAR OVERLAY (mobile drawer backdrop) ---- */
+.sidebar-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:200;
+}
+.sidebar-overlay.open { display:block; }
+
+/* ---- LAYOUT ---- */
+.app-body { display:flex; flex:1; overflow:hidden; min-height:0; }
+.sidebar {
+  width:220px; background:var(--surface); border-right:1px solid var(--border);
+  display:flex; flex-direction:column; flex-shrink:0; overflow-y:auto;
+}
+.sidebar-section { padding:16px 12px 8px; }
+.sidebar-label { font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:.8px; padding:0 8px; margin-bottom:6px; }
+.nav-item {
+  display:flex; align-items:center; gap:10px; padding:11px 10px; border-radius:var(--radius);
+  cursor:pointer; color:var(--text2); font-size:13px; font-weight:500; transition:.15s; margin-bottom:2px;
+  min-height:42px;
+}
+.nav-item:hover { background:var(--surface2); color:var(--text); }
+.nav-item.active { background:rgba(79,142,247,0.12); color:var(--accent); }
+.nav-item .ni { font-size:16px; width:20px; text-align:center; }
+.nav-badge { margin-left:auto; background:var(--red); color:#fff; border-radius:10px; font-size:10px; font-weight:700; padding:1px 6px; }
+.nav-badge.green { background:var(--green); color:#0a2e22; }
+.sidebar-footer { margin-top:auto; padding:12px; border-top:1px solid var(--border); }
+
+/* ---- CONTENT ---- */
+.content { flex:1; overflow:hidden; display:flex; flex-direction:column; }
+.content-inner { flex:1; overflow-y:auto; padding:24px; }
+.page { display:none; }
+.page.active { display:block; }
+
+/* ---- COMPONENTS ---- */
+.page-header { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
+.page-title { font-size:20px; font-weight:700; }
+.page-sub { font-size:13px; color:var(--text2); margin-top:2px; }
+.page-actions { margin-left:auto; display:flex; gap:8px; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius2); padding:20px; }
+.card-sm { padding:16px; }
+
+.stat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin-bottom:24px; }
+.stat-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius2);
+  padding:20px; position:relative; overflow:hidden;
+}
+.stat-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+}
+.stat-card.blue::before { background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+.stat-card.green::before { background:linear-gradient(90deg,var(--green),#1a9e78); }
+.stat-card.gold::before { background:linear-gradient(90deg,var(--gold),var(--orange)); }
+.stat-card.red::before { background:linear-gradient(90deg,var(--red),var(--orange)); }
+.stat-label { font-size:11px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+.stat-value { font-size:28px; font-weight:700; line-height:1; }
+.stat-sub { font-size:12px; color:var(--text2); margin-top:6px; }
+.stat-trend { font-size:11px; margin-top:8px; }
+.stat-trend.up { color:var(--green); }
+.stat-trend.down { color:var(--red); }
+
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th { padding:10px 14px; text-align:left; font-size:11px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); }
+td { padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text2); }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:rgba(255,255,255,0.02); }
+.td-name { color:var(--text); font-weight:600; }
+
+.badge {
+  display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:20px;
+  font-size:11px; font-weight:600;
+}
+.badge.available { background:rgba(45,212,160,0.12); color:var(--green); }
+.badge.occupied { background:rgba(79,142,247,0.12); color:var(--accent); }
+.badge.reserved { background:rgba(232,184,75,0.12); color:var(--gold); }
+.badge.cleaning { background:rgba(245,147,92,0.12); color:var(--orange); }
+.badge.maintenance { background:rgba(240,92,110,0.12); color:var(--red); }
+.badge.checkout { background:rgba(159,92,240,0.12); color:#b07af5; }
+.badge.confirmed { background:rgba(45,212,160,0.12); color:var(--green); }
+.badge.pending { background:rgba(232,184,75,0.12); color:var(--gold); }
+.badge.cancelled { background:rgba(240,92,110,0.12); color:var(--red); }
+.badge.paid { background:rgba(45,212,160,0.12); color:var(--green); }
+.badge.unpaid { background:rgba(240,92,110,0.12); color:var(--red); }
+.badge.vip { background:linear-gradient(90deg,rgba(232,184,75,0.2),rgba(245,208,122,0.1)); color:var(--gold2); border:1px solid rgba(232,184,75,0.3); }
+.badge.admin { background:rgba(240,92,110,0.15); color:var(--red); }
+.badge.manager { background:rgba(124,92,191,0.15); color:#b07af5; }
+.badge.receptionist { background:rgba(79,142,247,0.15); color:var(--accent); }
+.badge.housekeeping { background:rgba(245,147,92,0.15); color:var(--orange); }
+.badge.out-of-service { background:rgba(90,100,120,0.2); color:var(--text3); }
+
+/* ---- MODAL ---- */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000;
+  display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px);
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius2);
+  padding:28px; width:520px; max-width:95vw; max-height:90vh; overflow-y:auto; box-shadow:var(--shadow);
+}
+.modal-lg { width:720px; }
+.modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+.modal-title { font-size:17px; font-weight:700; }
+.modal-close { width:30px; height:30px; border-radius:8px; background:var(--surface2); border:none; cursor:pointer; color:var(--text2); font-size:16px; display:flex; align-items:center; justify-content:center; }
+.modal-close:hover { background:var(--border2); color:var(--text); }
+.modal-footer { display:flex; justify-content:flex-end; gap:8px; margin-top:24px; padding-top:16px; border-top:1px solid var(--border); }
+
+/* ---- FORMS ---- */
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+.form-group { margin-bottom:14px; }
+.form-group label { display:block; font-size:12px; font-weight:600; color:var(--text2); margin-bottom:5px; }
+.form-group input, .form-group select, .form-group textarea {
+  width:100%; padding:9px 12px; background:var(--surface2); border:1px solid var(--border2);
+  border-radius:var(--radius); color:var(--text); font-size:13px; outline:none; transition:.2s;
+  font-family:inherit;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color:var(--accent); box-shadow:0 0 0 3px rgba(79,142,247,0.12);
+}
+.form-group textarea { resize:vertical; min-height:80px; }
+
+/* ---- TOAST ---- */
+#toastContainer { position:fixed; top:20px; right:20px; z-index:9999; display:flex; flex-direction:column; gap:8px; }
+.toast {
+  padding:12px 16px; border-radius:var(--radius); box-shadow:var(--shadow); min-width:280px;
+  display:flex; align-items:center; gap:10px; font-size:13px; font-weight:500;
+  animation:slideIn .3s ease; border-left:3px solid;
+  background:var(--surface2);
+}
+.toast.success { border-color:var(--green); color:var(--green); }
+.toast.error { border-color:var(--red); color:var(--red); }
+.toast.warning { border-color:var(--orange); color:var(--orange); }
+.toast.info { border-color:var(--accent); color:var(--accent); }
+.toast span { color:var(--text); }
+@keyframes slideIn { from { transform:translateX(100%); opacity:0; } to { transform:none; opacity:1; } }
+
+/* ---- ROOMS GRID ---- */
+.rooms-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; }
+.room-card {
+  background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius2);
+  padding:16px; cursor:pointer; transition:.2s; position:relative; overflow:hidden;
+}
+.room-card:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.3); }
+.room-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; }
+.room-card.available::after { background:var(--green); }
+.room-card.occupied::after { background:var(--accent); }
+.room-card.reserved::after { background:var(--gold); }
+.room-card.cleaning::after { background:var(--orange); }
+.room-card.maintenance::after { background:var(--red); }
+.room-card.out-of-service::after { background:var(--text3); }
+.room-num { font-size:22px; font-weight:700; margin-bottom:4px; }
+.room-type { font-size:11px; color:var(--text3); margin-bottom:8px; }
+.room-price { font-size:13px; font-weight:600; color:var(--gold); }
+
+/* ---- CALENDAR ---- */
+.calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+.cal-header { text-align:center; font-size:11px; font-weight:700; color:var(--text3); padding:8px 0; }
+.cal-day {
+  aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; transition:.15s; position:relative;
+}
+.cal-day:hover { background:var(--surface3); }
+.cal-day.today { background:rgba(79,142,247,0.15); color:var(--accent); }
+.cal-day.has-booking { background:rgba(45,212,160,0.1); }
+.cal-day.has-checkin::after { content:''; position:absolute; bottom:4px; width:4px; height:4px; background:var(--green); border-radius:50%; }
+.cal-day.empty { opacity:0; pointer-events:none; }
+
+/* ---- HOUSEKEEPING ---- */
+.hk-board { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.hk-col { background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius2); padding:14px; }
+.hk-col-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:12px; color:var(--text3); }
+.hk-task {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:10px; margin-bottom:8px; cursor:pointer; transition:.2s;
+}
+.hk-task:hover { border-color:var(--border2); }
+.hk-task-room { font-size:15px; font-weight:700; margin-bottom:2px; }
+.hk-task-detail { font-size:12px; color:var(--text3); }
+.hk-task-staff { font-size:11px; color:var(--accent); margin-top:5px; }
+.priority-dot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; }
+.priority-dot.high { background:var(--red); }
+.priority-dot.medium { background:var(--orange); }
+.priority-dot.low { background:var(--green); }
+
+/* ---- REVENUE CHART ---- */
+.chart-area { height:160px; position:relative; margin-top:12px; }
+.chart-bars { display:flex; align-items:flex-end; height:140px; gap:4px; }
+.chart-bar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.chart-bar { width:100%; border-radius:4px 4px 0 0; transition:.3s; position:relative; }
+.chart-bar:hover::after { content:attr(data-val); position:absolute; top:-22px; left:50%; transform:translateX(-50%); font-size:10px; background:var(--surface3); padding:2px 6px; border-radius:4px; color:var(--text); white-space:nowrap; }
+.chart-label { font-size:9px; color:var(--text3); }
+
+/* ---- NOTIFICATIONS PANEL ---- */
+.notif-panel {
+  position:fixed; top:56px; right:0; width:360px; max-width:92vw; height:calc(100vh - 56px);
+  background:var(--surface); border-left:1px solid var(--border); z-index:150;
+  display:none; flex-direction:column; box-shadow:-8px 0 20px rgba(0,0,0,0.3);
+}
+.notif-panel.open { display:flex; }
+.notif-panel-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.notif-list { flex:1; overflow-y:auto; padding:8px; }
+.notif-item { padding:12px; border-radius:var(--radius); margin-bottom:4px; cursor:pointer; transition:.15s; display:flex; gap:10px; }
+.notif-item:hover { background:var(--surface2); }
+.notif-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; }
+.notif-text { flex:1; }
+.notif-msg { font-size:12px; color:var(--text); line-height:1.4; }
+.notif-time { font-size:11px; color:var(--text3); margin-top:3px; }
+.notif-item.unread { background:rgba(79,142,247,0.05); }
+
+/* ---- SEARCH OVERLAY ---- */
+#searchOverlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:2000; display:none;
+  align-items:flex-start; justify-content:center; padding-top:80px; backdrop-filter:blur(6px);
+}
+#searchOverlay.open { display:flex; }
+.search-box { background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius2); width:600px; overflow:hidden; box-shadow:var(--shadow); }
+.search-input-wrap { display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--border); }
+.search-input-wrap input { flex:1; background:none; border:none; outline:none; font-size:16px; color:var(--text); }
+.search-results { max-height:400px; overflow-y:auto; }
+.search-result-item { padding:12px 20px; cursor:pointer; display:flex; align-items:center; gap:12px; transition:.15s; }
+.search-result-item:hover { background:var(--surface2); }
+.search-result-icon { width:34px; height:34px; border-radius:8px; background:var(--surface2); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+.search-result-name { font-size:13px; font-weight:600; color:var(--text); }
+.search-result-sub { font-size:11px; color:var(--text3); }
+.search-category { padding:8px 20px; font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:.8px; background:var(--surface2); }
+
+/* ---- CRM TIMELINE ---- */
+.timeline { position:relative; padding-left:24px; }
+.timeline::before { content:''; position:absolute; left:7px; top:0; bottom:0; width:2px; background:var(--border2); }
+.tl-item { position:relative; margin-bottom:16px; }
+.tl-dot { position:absolute; left:-20px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--accent); border:2px solid var(--bg); }
+.tl-content { background:var(--surface2); border-radius:var(--radius); padding:10px 14px; }
+.tl-title { font-size:13px; font-weight:600; margin-bottom:2px; }
+.tl-date { font-size:11px; color:var(--text3); }
+
+/* ---- AUDIT LOG ---- */
+.audit-entry { padding:12px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; gap:12px; }
+.audit-icon { width:32px; height:32px; border-radius:8px; background:var(--surface2); display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+.audit-body { flex:1; }
+.audit-action { font-size:13px; font-weight:600; margin-bottom:2px; }
+.audit-meta { font-size:11px; color:var(--text3); }
+.audit-change { font-size:11px; margin-top:4px; }
+.audit-before { color:var(--red); text-decoration:line-through; }
+.audit-after { color:var(--green); }
+
+/* ---- MAINTENANCE ---- */
+.ticket-card {
+  background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius2);
+  padding:16px; margin-bottom:10px; display:flex; align-items:flex-start; gap:14px;
+}
+.ticket-priority { width:8px; height:8px; border-radius:50%; margin-top:6px; flex-shrink:0; }
+.ticket-priority.high { background:var(--red); }
+.ticket-priority.medium { background:var(--orange); }
+.ticket-priority.low { background:var(--green); }
+.ticket-body { flex:1; }
+.ticket-title { font-size:14px; font-weight:600; margin-bottom:4px; }
+.ticket-meta { font-size:12px; color:var(--text3); }
+.ticket-actions { display:flex; gap:6px; margin-top:8px; }
+
+/* ---- BILLING ---- */
+.invoice-wrap { background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius2); padding:24px; }
+.invoice-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; }
+.invoice-logo { font-size:18px; font-weight:700; }
+.invoice-table { width:100%; margin-bottom:16px; }
+.invoice-total { text-align:right; font-size:18px; font-weight:700; color:var(--gold); }
+
+/* ---- BRANCH SELECTOR ---- */
+.branch-card {
+  background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius2);
+  padding:20px; cursor:pointer; transition:.2s; text-align:center;
+}
+.branch-card:hover, .branch-card.active { border-color:var(--accent); }
+.branch-card.active { background:rgba(79,142,247,0.05); }
+.branch-icon { font-size:32px; margin-bottom:10px; }
+.branch-name { font-size:15px; font-weight:700; margin-bottom:4px; }
+.branch-meta { font-size:12px; color:var(--text3); }
+
+/* ---- FLOATING WHATSAPP ---- */
+#waBtn {
+  position:fixed; bottom:24px; right:24px; width:52px; height:52px;
+  background:#25d366; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:24px; cursor:pointer; box-shadow:0 4px 16px rgba(37,211,102,0.4); z-index:500;
+  transition:.2s; text-decoration:none;
+}
+#waBtn:hover { transform:scale(1.1); }
+
+/* ---- CLOCK ---- */
+#sysClock { font-size:12px; color:var(--text3); font-variant-numeric:tabular-nums; }
+
+/* ---- SCROLLBAR ---- */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:var(--text3); }
+
+/* ---- RESPONSIVE ---- */
+/* Tablet: sidebar becomes icon rail (still always visible, no drawer needed) */
+@media (max-width:1024px) and (min-width:901px) {
+  .sidebar { width:64px; }
+  .sidebar-label, .nav-item span:not(.ni), .sidebar-footer, .nav-badge { display:none; }
+  .nav-item { justify-content:center; }
+  .grid-3 { grid-template-columns:1fr 1fr; }
+}
+
+/* Mobile / small tablet: sidebar becomes a slide-in drawer triggered by hamburger */
+@media (max-width:900px) {
+  .hamburger-btn { display:flex; }
+  .topbar-logo-text { display:none; }
+  .topbar-branch { max-width:120px; }
+
+  .sidebar {
+    position:fixed; top:0; left:0; bottom:0; width:260px; max-width:80vw;
+    z-index:210; transform:translateX(-100%); transition:transform .25s ease;
+    box-shadow:8px 0 24px rgba(0,0,0,0.4); padding-top:56px;
+  }
+  .sidebar.open { transform:translateX(0); }
+  .sidebar-label, .nav-item span, .sidebar-footer, .nav-badge { display:initial !important; }
+  .nav-item { justify-content:flex-start; }
+  .nav-badge { display:inline-flex !important; }
+
+  .grid-2, .grid-3, .hk-board { grid-template-columns:1fr; }
+  .stat-grid { grid-template-columns:1fr 1fr; gap:10px; }
+  .content-inner { padding:14px; }
+  .page-header { flex-wrap:wrap; gap:10px; }
+  .page-actions { width:100%; flex-wrap:wrap; }
+  .page-actions > * { flex:1; min-width:0; }
+}
+
+@media (max-width:640px) {
+  .topbar { padding:0 8px; gap:6px; }
+  .topbar-search { display:none; }
+  .topbar-branch { display:none; }
+  .topbar-clock { display:none; }
+  .stat-grid { grid-template-columns:1fr; }
+  .grid-row-3, .form-row-3 { grid-template-columns:1fr; }
+  .user-chip-text { display:none; }
+  .user-chip { padding:5px; }
+  .chip-caret { display:none; }
+  .account-menu { right:-8px; width:calc(100vw - 24px); max-width:280px; }
+
+  /* Modals become bottom sheets / full screen on phones */
+  .modal-overlay { align-items:flex-end; padding:0; }
+  .modal, .modal-lg {
+    width:100%; max-width:100%; border-radius:18px 18px 0 0;
+    max-height:92vh; padding:20px 16px calc(20px + env(safe-area-inset-bottom));
+  }
+  .form-row, .form-row-3 { grid-template-columns:1fr; gap:0; }
+  .form-group { margin-bottom:14px; }
+
+  /* Tables become stacked cards on phones */
+  .table-wrap table, .table-wrap thead, .table-wrap tbody, .table-wrap th, .table-wrap td, .table-wrap tr { display:block; }
+  .table-wrap thead { display:none; }
+  .table-wrap tr {
+    background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius2);
+    padding:12px; margin-bottom:10px;
+  }
+  .table-wrap td {
+    border:none; padding:6px 0; display:flex; justify-content:space-between; gap:10px;
+    text-align:right; font-size:13px;
+  }
+  .table-wrap td::before {
+    content: attr(data-label); font-size:11px; font-weight:700; color:var(--text3);
+    text-transform:uppercase; letter-spacing:.4px; text-align:left;
+  }
+  .table-wrap td:last-child { flex-direction:column; align-items:stretch; }
+  .table-wrap td:last-child::before { display:none; }
+  .table-wrap td:last-child .btn { width:100%; margin:3px 0; }
+
+  .rooms-grid { grid-template-columns:repeat(2,1fr); gap:8px; }
+  .room-card { padding:12px; }
+  .room-num { font-size:18px; }
+
+  .search-box { width:100%; max-width:100%; border-radius:0; height:100vh; height:100dvh; }
+  #searchOverlay { padding-top:0; }
+  .search-results { max-height:calc(100vh - 60px); max-height:calc(100dvh - 60px); }
+
+  .login-card { padding:32px 22px; width:100%; max-width:380px; }
+  #waBtn { bottom:16px; right:16px; width:48px; height:48px; font-size:20px; }
+  #cmdPaletteBtn { bottom:76px; right:16px; }
+}
+
+/* Ensure comfortable tap targets everywhere on touch devices */
+@media (hover:none) and (pointer:coarse) {
+  .btn { min-height:38px; }
+  .btn-sm { min-height:34px; padding:8px 14px; }
+  .nav-item { min-height:44px; }
+  input, select, textarea { font-size:16px !important; } /* prevents iOS/Android zoom-on-focus */
+}
+
+/* ---- TABS ---- */
+.tabs { display:flex; gap:4px; border-bottom:1px solid var(--border); margin-bottom:20px; }
+.tab { padding:8px 16px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text3); border-bottom:2px solid transparent; transition:.15s; }
+.tab:hover { color:var(--text2); }
+.tab.active { color:var(--accent); border-color:var(--accent); }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+
+/* ---- PROGRESS ---- */
+.progress { height:6px; background:var(--surface3); border-radius:3px; overflow:hidden; }
+.progress-bar { height:100%; border-radius:3px; transition:.3s; }
+.progress-bar.blue { background:var(--accent); }
+.progress-bar.green { background:var(--green); }
+.progress-bar.gold { background:var(--gold); }
+.progress-bar.red { background:var(--red); }
+
+/* segment meter */
+.occ-meter { position:relative; height:8px; background:var(--surface3); border-radius:4px; overflow:hidden; margin-top:4px; }
+.occ-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--green)); transition:.5s; }
+
+/* section title */
+.section-title { font-size:14px; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* empty state */
+.empty-state { text-align:center; padding:48px 20px; }
+.empty-icon { font-size:48px; margin-bottom:12px; opacity:.3; }
+.empty-text { font-size:14px; color:var(--text3); }
+
+/* toggle */
+.toggle { position:relative; width:40px; height:22px; display:inline-block; }
+.toggle input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; inset:0; background:var(--border2); border-radius:11px; cursor:pointer; transition:.3s; }
+.toggle-slider::before { content:''; position:absolute; width:16px; height:16px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.3s; }
+.toggle input:checked + .toggle-slider { background:var(--accent); }
+.toggle input:checked + .toggle-slider::before { transform:translateX(18px); }
+
+/* loyalty bar */
+.loyalty-bar { display:flex; align-items:center; gap:8px; }
+.loyalty-stars { color:var(--gold); font-size:12px; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon">🏨</div>
+      <h1>HotelOS Pro</h1>
+      <p>Enterprise Hotel Management System</p>
+    </div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="loginUser" value="admin" placeholder="Enter username">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPass" value="admin123" placeholder="Enter password">
+    </div>
+    <div class="form-group">
+      <label>Branch</label>
+      <select id="loginBranch">
+        <option value="grand">Grand Palace Hotel — Kampala</option>
+        <option value="lake">Lake View Resort — Entebbe</option>
+        <option value="city">City Centre Hotel — Jinja</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="doLogin()">Sign In</button>
+    <div class="login-roles">
+      <p>Quick login by role:</p>
+      <div class="role-badges">
+        <span class="role-badge" onclick="quickLogin('admin')">Admin</span>
+        <span class="role-badge" onclick="quickLogin('manager')">Manager</span>
+        <span class="role-badge" onclick="quickLogin('receptionist')">Receptionist</span>
+        <span class="role-badge" onclick="quickLogin('housekeeping')">Housekeeping</span>
+        <span class="role-badge" onclick="quickLogin('maintenance')">Maintenance</span>
+      </div>
+    </div>
+    <div class="login-footer">
+      <p>Powered by <a href="#">Monalisa Tech Solutions</a></p>
+      <p style="margin-top:4px">📧 kabuusumonalisa@gmail.com &nbsp;|&nbsp; 📱 +256703953711</p>
+    </div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="appShell">
+  <div class="topbar">
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-logo">
+      <div class="tl-icon">🏨</div>
+      <span class="topbar-logo-text">HotelOS Pro</span>
+    </div>
+    <div class="topbar-branch" id="branchChip" onclick="showPage('branches')">Grand Palace Hotel</div>
+    <div class="topbar-search">
+      <span class="si">🔍</span>
+      <input type="text" placeholder="Search guests, rooms, bookings… (Ctrl+K)" id="globalSearchInput" onfocus="openSearch()" readonly>
+    </div>
+    <div class="topbar-right">
+      <span id="sysClock" class="topbar-clock">00:00:00</span>
+      <div class="notif-btn" onclick="toggleNotifPanel()" aria-label="Notifications">
+        🔔
+        <span class="notif-count" id="notifCount">0</span>
+      </div>
+      <div class="user-menu-wrap">
+        <div class="user-chip" id="userChipBtn" onclick="toggleAccountMenu()">
+          <div class="user-avatar" id="userAvatar">A</div>
+          <div class="user-chip-text">
+            <span id="userName">Admin</span>
+            <div class="user-role-tag" id="userRoleTag">Administrator</div>
+          </div>
+          <span class="chip-caret">▾</span>
+        </div>
+        <div class="account-menu" id="accountMenu">
+          <div class="account-menu-header">
+            <div class="user-avatar" id="userAvatarBig">A</div>
+            <div>
+              <div class="account-menu-name" id="accountMenuName">Admin User</div>
+              <div class="account-menu-role" id="accountMenuRole">Administrator</div>
+            </div>
+          </div>
+          <div class="account-menu-divider"></div>
+          <div class="account-menu-item" onclick="closeAccountMenu();showPage('profile')">
+            <span class="ami">👤</span> My Profile
+          </div>
+          <div class="account-menu-item" onclick="closeAccountMenu();showPage('settings')">
+            <span class="ami">⚙️</span> Settings
+          </div>
+          <div class="account-menu-divider"></div>
+          <div class="account-menu-label">Switch Role</div>
+          <div class="account-menu-item" onclick="switchRole('admin')"><span class="ami">🛡️</span> Admin</div>
+          <div class="account-menu-item" onclick="switchRole('manager')"><span class="ami">📋</span> Manager</div>
+          <div class="account-menu-item" onclick="switchRole('receptionist')"><span class="ami">🛎️</span> Receptionist</div>
+          <div class="account-menu-item" onclick="switchRole('housekeeping')"><span class="ami">🧹</span> Housekeeping</div>
+          <div class="account-menu-item" onclick="switchRole('maintenance')"><span class="ami">🔧</span> Maintenance</div>
+          <div class="account-menu-divider"></div>
+          <div class="account-menu-item account-menu-danger" onclick="doLogout()">
+            <span class="ami">🚪</span> Sign Out
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <div class="app-body">
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+
+        <div class="sidebar-label">Main</div>
+        <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">
+          <span class="ni">📊</span><span>Dashboard</span>
+        </div>
+        <div class="nav-item" data-page="bookings" onclick="showPage('bookings')">
+          <span class="ni">📅</span><span>Bookings</span>
+          <span class="nav-badge" id="pendingBookingsBadge">0</span>
+        </div>
+        <div class="nav-item" data-page="checkin" onclick="showPage('checkin')">
+          <span class="ni">✅</span><span>Check-in</span>
+        </div>
+        <div class="nav-item" data-page="checkout" onclick="showPage('checkout')">
+          <span class="ni">🚪</span><span>Check-out</span>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Operations</div>
+        <div class="nav-item" data-page="rooms" onclick="showPage('rooms')">
+          <span class="ni">🛏️</span><span>Rooms</span>
+        </div>
+        <div class="nav-item" data-page="housekeeping" onclick="showPage('housekeeping')">
+          <span class="ni">🧹</span><span>Housekeeping</span>
+          <span class="nav-badge green" id="hkBadge">0</span>
+        </div>
+        <div class="nav-item" data-page="maintenance" onclick="showPage('maintenance')">
+          <span class="ni">🔧</span><span>Maintenance</span>
+          <span class="nav-badge" id="maintBadge">0</span>
+        </div>
+        <div class="nav-item" data-page="billing" onclick="showPage('billing')">
+          <span class="ni">💳</span><span>Billing</span>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Management</div>
+        <div class="nav-item" data-page="guests" onclick="showPage('guests')">
+          <span class="ni">👥</span><span>Guests / CRM</span>
+        </div>
+        <div class="nav-item" data-page="staff" onclick="showPage('staff')">
+          <span class="ni">👔</span><span>Staff</span>
+        </div>
+        <div class="nav-item" data-page="revenue" onclick="showPage('revenue')">
+          <span class="ni">📈</span><span>Revenue</span>
+        </div>
+        <div class="nav-item" data-page="branches" onclick="showPage('branches')">
+          <span class="ni">🏢</span><span>Branches</span>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">System</div>
+        <div class="nav-item" data-page="audit" onclick="showPage('audit')">
+          <span class="ni">📋</span><span>Audit Log</span>
+        </div>
+        <div class="nav-item" data-page="settings" onclick="showPage('settings')">
+          <span class="ni">⚙️</span><span>Settings</span>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div style="font-size:10px;color:var(--text3);text-align:center">Monalisa Tech Solutions<br>v2.4.1</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="content-inner" id="contentInner">
+
+        <!-- DASHBOARD -->
+        <div class="page active" id="page-dashboard">
+          <div class="page-header">
+            <div>
+              <div class="page-title">Dashboard</div>
+              <div class="page-sub" id="dashBranchSub">Grand Palace Hotel — Live Overview</div>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-sm btn-secondary" onclick="refreshDashboard()">↻ Refresh</button>
+              <button class="btn btn-sm btn-primary" onclick="showModal('newBookingModal')">+ New Booking</button>
+            </div>
+          </div>
+
+          <div class="stat-grid" id="dashStats"></div>
+
+          <div class="grid-2" style="margin-bottom:20px">
+            <div class="card">
+              <div class="section-title">Revenue — Last 7 Days</div>
+              <div class="chart-area" id="revenueChart"></div>
+            </div>
+            <div class="card">
+              <div class="section-title">Room Status Overview</div>
+              <div id="roomStatusChart"></div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="section-title">Today's Arrivals</div>
+              <div id="todayArrivals"></div>
+            </div>
+            <div class="card">
+              <div class="section-title">Today's Departures</div>
+              <div id="todayDepartures"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOOKINGS -->
+        <div class="page" id="page-bookings">
+          <div class="page-header">
+            <div><div class="page-title">Bookings</div><div class="page-sub">All reservations and booking management</div></div>
+            <div class="page-actions">
+              <input type="text" id="bookingSearch" oninput="filterBookings()" placeholder="Search bookings…" style="padding:8px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;width:200px">
+              <select id="bookingStatusFilter" onchange="filterBookings()" style="padding:8px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
+                <option value="">All Status</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="pending">Pending</option>
+                <option value="checked_in">Checked In</option>
+                <option value="checked_out">Checked Out</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <button class="btn btn-sm btn-primary" onclick="showModal('newBookingModal')">+ New Booking</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="table-wrap">
+              <table>
+                <thead><tr>
+                  <th>Booking ID</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th>
+                  <th>Status</th><th>Payment</th><th>Total</th><th>Actions</th>
+                </tr></thead>
+                <tbody id="bookingsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHECK-IN -->
+        <div class="page" id="page-checkin">
+          <div class="page-header">
+            <div><div class="page-title">Check-in</div><div class="page-sub">Process guest arrivals</div></div>
+            <div class="page-actions">
+              <button class="btn btn-sm btn-primary" onclick="showModal('newBookingModal')">+ Walk-in</button>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <div class="card" style="margin-bottom:16px">
+                <div class="section-title">Ready for Check-in Today</div>
+                <div id="checkinList"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="section-title">Quick Check-in</div>
+              <div class="form-group">
+                <label>Booking ID or Guest Name</label>
+                <input type="text" id="checkinSearch" oninput="searchCheckin()" placeholder="Enter booking ID or guest name…">
+              </div>
+              <div id="checkinSearchResult"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHECK-OUT -->
+        <div class="page" id="page-checkout">
+          <div class="page-header">
+            <div><div class="page-title">Check-out</div><div class="page-sub">Process guest departures and billing</div></div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="section-title">Currently Checked In</div>
+              <div id="checkoutList"></div>
+            </div>
+            <div class="card">
+              <div class="section-title">Overdue Check-outs</div>
+              <div id="overdueList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROOMS -->
+        <div class="page" id="page-rooms">
+          <div class="page-header">
+            <div><div class="page-title">Rooms</div><div class="page-sub">Room management and lifecycle</div></div>
+            <div class="page-actions">
+              <select id="roomFilter" onchange="renderRooms()" style="padding:8px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
+                <option value="">All Status</option>
+                <option value="available">Available</option>
+                <option value="occupied">Occupied</option>
+                <option value="reserved">Reserved</option>
+                <option value="cleaning">Cleaning</option>
+                <option value="maintenance">Maintenance</option>
+              </select>
+              <button class="btn btn-sm btn-primary" onclick="showModal('addRoomModal')">+ Add Room</button>
+            </div>
+          </div>
+          <div class="rooms-grid" id="roomsGrid"></div>
+        </div>
+
+        <!-- HOUSEKEEPING -->
+        <div class="page" id="page-housekeeping">
+          <div class="page-header">
+            <div><div class="page-title">Housekeeping</div><div class="page-sub">Cleaning tasks and room inspection</div></div>
+            <div class="page-actions">
+              <button class="btn btn-sm btn-primary" onclick="showModal('newHKModal')">+ Assign Task</button>
+            </div>
+          </div>
+          <div class="hk-board" id="hkBoard"></div>
+        </div>
+
+        <!-- MAINTENANCE -->
+        <div class="page" id="page-maintenance">
+          <div class="page-header">
+            <div><div class="page-title">Maintenance</div><div class="page-sub">Tickets, repairs, and downtime</div></div>
+            <div class="page-actions">
+              <button class="btn btn-sm btn-primary" onclick="showModal('newMaintModal')">+ New Ticket</button>
+            </div>
+          </div>
+          <div id="maintenanceList"></div>
+        </div>
+
+        <!-- BILLING -->
+        <div class="page" id="page-billing">
+          <div class="page-header">
+            <div><div class="page-title">Billing & Payments</div><div class="page-sub">Invoices, payments, and financial records</div></div>
+          </div>
+          <div class="tabs">
+            <div class="tab active" onclick="switchTab(this,'tab-invoices')">Invoices</div>
+            <div class="tab" onclick="switchTab(this,'tab-payments')">Payments</div>
+          </div>
+          <div class="tab-content active" id="tab-invoices">
+            <div class="card"><div class="table-wrap"><table>
+              <thead><tr><th>Invoice ID</th><th>Booking</th><th>Guest</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="invoicesBody"></tbody>
+            </table></div></div>
+          </div>
+          <div class="tab-content" id="tab-payments">
+            <div class="card"><div class="table-wrap"><table>
+              <thead><tr><th>Payment ID</th><th>Booking</th><th>Amount</th><th>Method</th><th>Status</th><th>Timestamp</th></tr></thead>
+              <tbody id="paymentsBody"></tbody>
+            </table></div></div>
+          </div>
+        </div>
+
+        <!-- GUESTS / CRM -->
+        <div class="page" id="page-guests">
+          <div class="page-header">
+            <div><div class="page-title">Guest CRM</div><div class="page-sub">Guest profiles, loyalty, and history</div></div>
+            <div class="page-actions">
+              <input type="text" id="guestSearch" oninput="filterGuests()" placeholder="Search guests…" style="padding:8px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;width:200px">
+              <button class="btn btn-sm btn-primary" onclick="showModal('newGuestModal')">+ New Guest</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="table-wrap"><table>
+              <thead><tr><th>Guest</th><th>Email</th><th>Phone</th><th>VIP</th><th>Loyalty Pts</th><th>Stays</th><th>Last Stay</th><th>Actions</th></tr></thead>
+              <tbody id="guestsTableBody"></tbody>
+            </table></div>
+          </div>
+        </div>
+
+        <!-- STAFF -->
+        <div class="page" id="page-staff">
+          <div class="page-header">
+            <div><div class="page-title">Staff Management</div><div class="page-sub">Team members and role management</div></div>
+            <div class="page-actions">
+              <button class="btn btn-sm btn-primary" onclick="showModal('newStaffModal')">+ Add Staff</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="table-wrap"><table>
+              <thead><tr><th>Staff</th><th>Role</th><th>Department</th><th>Branch</th><th>Status</th><th>Shift</th><th>Actions</th></tr></thead>
+              <tbody id="staffTableBody"></tbody>
+            </table></div>
+          </div>
+        </div>
+
+        <!-- REVENUE -->
+        <div class="page" id="page-revenue">
+          <div class="page-header">
+            <div><div class="page-title">Revenue Intelligence</div><div class="page-sub">KPIs, analytics, and forecasting</div></div>
+          </div>
+          <div class="stat-grid" id="revenueStats"></div>
+          <div class="grid-2" style="margin-bottom:20px">
+            <div class="card">
+              <div class="section-title">Monthly Revenue</div>
+              <div class="chart-area" id="monthlyRevenueChart"></div>
+            </div>
+            <div class="card">
+              <div class="section-title">Revenue by Room Type</div>
+              <div id="roomTypeRevChart"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-title">Branch Comparison</div>
+            <div id="branchComparison"></div>
+          </div>
+        </div>
+
+        <!-- BRANCHES -->
+        <div class="page" id="page-branches">
+          <div class="page-header">
+            <div><div class="page-title">Multi-Branch Management</div><div class="page-sub">All hotel properties</div></div>
+            <div class="page-actions">
+              <button class="btn btn-sm btn-primary" onclick="showModal('newBranchModal')">+ Add Branch</button>
+            </div>
+          </div>
+          <div class="grid-3" id="branchesGrid"></div>
+          <div class="card" style="margin-top:20px">
+            <div class="section-title">Cross-Branch Analytics</div>
+            <div id="crossBranchAnalytics"></div>
+          </div>
+        </div>
+
+        <!-- AUDIT -->
+        <div class="page" id="page-audit">
+          <div class="page-header">
+            <div><div class="page-title">Audit Log</div><div class="page-sub">Immutable system event log</div></div>
+          </div>
+          <div class="card">
+            <div id="auditLogContainer"></div>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="page" id="page-settings">
+          <div class="page-header">
+            <div><div class="page-title">System Settings</div><div class="page-sub">Configure HotelOS Pro</div></div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="section-title">Pricing Rules</div>
+              <div id="pricingRules"></div>
+            </div>
+            <div class="card">
+              <div class="section-title">System Preferences</div>
+              <div id="systemPrefs"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE -->
+        <div class="page" id="page-profile">
+          <div class="page-header">
+            <div><div class="page-title">My Profile</div></div>
+          </div>
+          <div class="grid-2">
+            <div class="card" id="profileCard"></div>
+            <div class="card">
+              <div class="section-title">Recent Activity</div>
+              <div id="myActivity"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /content-inner -->
+    </div><!-- /content -->
+  </div><!-- /app-body -->
+</div><!-- /appShell -->
+
+<!-- NOTIFICATIONS PANEL -->
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-panel-header">
+    <strong>Notifications</strong>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-sm btn-secondary" onclick="markAllRead()">Mark all read</button>
+      <button class="btn btn-sm btn-secondary" onclick="toggleNotifPanel()">✕</button>
+    </div>
+  </div>
+  <div class="notif-list" id="notifList"></div>
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div id="searchOverlay" onclick="closeSearch(event)">
+  <div class="search-box" onclick="event.stopPropagation()">
+    <div class="search-input-wrap">
+      <span style="font-size:16px">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search anything — guests, rooms, bookings, staff…" oninput="doSearch(this.value)" autofocus>
+      <span style="font-size:12px;color:var(--text3);cursor:pointer" onclick="closeSearch()">ESC</span>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toastContainer"></div>
+
+<!-- WHATSAPP -->
+<a id="waBtn" href="https://wa.me/256703953711" target="_blank" title="WhatsApp Support">💬</a>
+
+<!-- ============================================================ MODALS ============================================================ -->
+
+<!-- NEW BOOKING -->
+<div class="modal-overlay" id="newBookingModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div class="modal-title">New Booking</div>
+      <button class="modal-close" onclick="closeModal('newBookingModal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Guest</label>
+        <select id="bkGuest"></select>
+      </div>
+      <div class="form-group">
+        <label>Room</label>
+        <select id="bkRoom"></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Check-in Date</label>
+        <input type="date" id="bkCheckin">
+      </div>
+      <div class="form-group">
+        <label>Check-out Date</label>
+        <input type="date" id="bkCheckout">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Number of Guests</label>
+        <input type="number" id="bkNumGuests" value="1" min="1" max="10">
+      </div>
+      <div class="form-group">
+        <label>Payment Method</label>
+        <select id="bkPayMethod">
+          <option>Cash</option>
+          <option>Card</option>
+          <option>Mobile Money</option>
+          <option>Bank Transfer</option>
+          <option>Invoice</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Special Requests</label>
+      <textarea id="bkRequests" placeholder="Any special requirements…"></textarea>
+    </div>
+    <div id="bkSummary" style="padding:14px;background:var(--surface2);border-radius:var(--radius);margin-top:4px;font-size:13px;color:var(--text2)">Select room and dates to see price summary.</div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('newBookingModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="createBooking()">Confirm Booking</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW GUEST -->
+<div class="modal-overlay" id="newGuestModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">New Guest</div>
+      <button class="modal-close" onclick="closeModal('newGuestModal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>First Name</label><input type="text" id="gFirstName" placeholder="John"></div>
+      <div class="form-group"><label>Last Name</label><input type="text" id="gLastName" placeholder="Doe"></div>
+    </div>
+    <div class="form-group"><label>Email</label><input type="email" id="gEmail" placeholder="john@email.com"></div>
+    <div class="form-group"><label>Phone</label><input type="tel" id="gPhone" placeholder="+256…"></div>
+    <div class="form-group"><label>Nationality</label><input type="text" id="gNationality" placeholder="Ugandan"></div>
+    <div class="form-group"><label>ID/Passport Number</label><input type="text" id="gIdNum" placeholder="CM123456"></div>
+    <div class="form-row">
+      <div class="form-group"><label>VIP Status</label><select id="gVip"><option value="0">Standard</option><option value="1">VIP Silver</option><option value="2">VIP Gold</option><option value="3">VIP Platinum</option></select></div>
+      <div class="form-group"><label>Preferences</label><input type="text" id="gPrefs" placeholder="e.g. High floor, quiet"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('newGuestModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="createGuest()">Add Guest</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW STAFF -->
+<div class="modal-overlay" id="newStaffModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add Staff Member</div>
+      <button class="modal-close" onclick="closeModal('newStaffModal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Full Name</label><input type="text" id="sName" placeholder="Name"></div>
+      <div class="form-group"><label>Role</label><select id="sRole"><option>receptionist</option><option>manager</option><option>housekeeping</option><option>maintenance</option><option>admin</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Email</label><input type="email" id="sEmail"></div>
+      <div class="form-group"><label>Phone</label><input type="tel" id="sPhone"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Shift</label><select id="sShift"><option>Morning (6AM-2PM)</option><option>Afternoon (2PM-10PM)</option><option>Night (10PM-6AM)</option></select></div>
+      <div class="form-group"><label>Branch</label><select id="sBranch"><option value="grand">Grand Palace</option><option value="lake">Lake View</option><option value="city">City Centre</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('newStaffModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="createStaff()">Add Staff</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW MAINTENANCE TICKET -->
+<div class="modal-overlay" id="newMaintModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">New Maintenance Ticket</div>
+      <button class="modal-close" onclick="closeModal('newMaintModal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Room</label><select id="mRoom"></select></div>
+      <div class="form-group"><label>Priority</label><select id="mPriority"><option>high</option><option>medium</option><option>low</option></select></div>
+    </div>
+    <div class="form-group"><label>Issue Title</label><input type="text" id="mTitle" placeholder="e.g. AC not working"></div>
+    <div class="form-group"><label>Description</label><textarea id="mDesc" placeholder="Describe the issue…"></textarea></div>
+    <div class="form-group"><label>Assign Technician</label><select id="mTech"></select></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('newMaintModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="createMaintenanceTicket()">Submit Ticket</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW HOUSEKEEPING TASK -->
+<div class="modal-overlay" id="newHKModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Assign Housekeeping Task</div>
+      <button class="modal-close" onclick="closeModal('newHKModal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Room</label><select id="hkRoom"></select></div>
+      <div class="form-group"><label>Task Type</label><select id="hkType"><option>Standard Clean</option><option>Deep Clean</option><option>VIP Turndown</option><option>Post Checkout</option><option>Inspection</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Assign Staff</label><select id="hkStaff"></select></div>
+      <div class="form-group"><label>Priority</label><select id="hkPriority"><option>high</option><option>medium</option><option>low</option></select></div>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="hkNotes" placeholder="Any special instructions…"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('newHKModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="createHKTask()">Assign Task</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD ROOM -->
+<div class="modal-overlay" id="addRoomModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add Room</div>
+      <button class="modal-close" onclick="closeModal('addRoomModal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Room Number</label><input type="text" id="rmNum" placeholder="e.g. 301"></div>
+      <div class="form-group"><label>Type</label><select id="rmType"><option>Standard</option><option>Deluxe</option><option>Suite</option><option>Executive</option><option>Presidential</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Floor</label><input type="number" id="rmFloor" value="1" min="1"></div>
+      <div class="form-group"><label>Capacity</label><input type="number" id="rmCap" value="2" min="1" max="10"></div>
+    </div>
+    <div class="form-group"><label>Price per Night (UGX)</label><input type="number" id="rmPrice" placeholder="150000"></div>
+    <div class="form-group"><label>Features (comma separated)</label><input type="text" id="rmFeatures" placeholder="WiFi, AC, TV, Minibar"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('addRoomModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addRoom()">Add Room</button>
+    </div>
+  </div>
+</div>
+
+<!-- GUEST PROFILE MODAL -->
+<div class="modal-overlay" id="guestProfileModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div class="modal-title" id="gpTitle">Guest Profile</div>
+      <button class="modal-close" onclick="closeModal('guestProfileModal')">✕</button>
+    </div>
+    <div id="guestProfileContent"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('guestProfileModal')">Close</button>
+      <button class="btn btn-primary" onclick="bookForGuest()">New Booking</button>
+    </div>
+  </div>
+</div>
+
+<!-- INVOICE MODAL -->
+<div class="modal-overlay" id="invoiceModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div class="modal-title">Invoice</div>
+      <button class="modal-close" onclick="closeModal('invoiceModal')">✕</button>
+    </div>
+    <div id="invoiceContent"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('invoiceModal')">Close</button>
+      <button class="btn btn-success" onclick="simulatePrint()">🖨️ Print / Export</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW BRANCH -->
+<div class="modal-overlay" id="newBranchModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add New Branch</div>
+      <button class="modal-close" onclick="closeModal('newBranchModal')">✕</button>
+    </div>
+    <div class="form-group"><label>Branch Name</label><input type="text" id="bnName" placeholder="e.g. Pearl of Africa Hotel"></div>
+    <div class="form-row">
+      <div class="form-group"><label>City</label><input type="text" id="bnCity" placeholder="Kampala"></div>
+      <div class="form-group"><label>Rooms Count</label><input type="number" id="bnRooms" value="50"></div>
+    </div>
+    <div class="form-group"><label>Manager Name</label><input type="text" id="bnManager" placeholder="Manager name"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('newBranchModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addBranch()">Add Branch</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ SCRIPT ============================================================ -->
+<script>
+// ================================================================ STATE ================================================================
+const STATE = {
+  currentUser: null,
+  currentBranch: 'grand',
+  systemTime: new Date(),
+  simulationSpeed: 1,
+
+  branches: [
+    { id:'grand', name:'Grand Palace Hotel', city:'Kampala', rooms:30, manager:'Sarah Nakato', stars:5, phone:'+256414123456', revenue:0 },
+    { id:'lake',  name:'Lake View Resort',   city:'Entebbe', rooms:20, manager:'James Okello',  stars:4, phone:'+256414789012', revenue:0 },
+    { id:'city',  name:'City Centre Hotel',  city:'Jinja',   rooms:15, manager:'Grace Atim',   stars:3, phone:'+256434567890', revenue:0 }
+  ],
+
+  guests: [],
+  rooms: [],
+  bookings: [],
+  payments: [],
+  staff: [],
+  housekeeping: [],
+  maintenance: [],
+  notifications: [],
+  auditLog: [],
+  pricingRules: [
+    { id:'pr1', type:'Weekend Surcharge', multiplier:1.2, active:true },
+    { id:'pr2', type:'Long Stay Discount (7+ nights)', multiplier:0.85, active:true },
+    { id:'pr3', type:'VIP Discount', multiplier:0.9, active:true },
+    { id:'pr4', type:'Early Bird (30+ days advance)', multiplier:0.8, active:false }
+  ],
+  undoStack: [],
+  settings: { autoCheckoutTime:'12:00', breakfastPrice:25000, taxRate:0.18, currency:'UGX', dateFormat:'DD/MM/YYYY' }
+};
+
+// Permissions
+const PERMISSIONS = {
+  admin:         ['all'],
+  manager:       ['bookings','rooms','guests','staff','revenue','housekeeping','maintenance','billing','audit'],
+  receptionist:  ['bookings','guests','checkin','checkout','billing','rooms_view'],
+  housekeeping:  ['housekeeping','rooms_view'],
+  maintenance:   ['maintenance','rooms_view']
+};
+
+// ================================================================ SEED DATA ================================================================
+function seedData() {
+  const names = [
+    ['Alice','Nakato'],['Bob','Ssekandi'],['Carol','Auma'],['David','Otieno'],
+    ['Eve','Akello'],['Frank','Mugisha'],['Grace','Opio'],['Henry','Tumwine'],
+    ['Irene','Namuli'],['James','Kyeyune'],['Kate','Atim'],['Leo','Wasswa'],
+    ['Mary','Nalwoga'],['Nile','Ocen'],['Olivia','Nabwire'],['Paul','Kiggundu'],
+    ['Queen','Awor'],['Robert','Byamukama'],['Sandra','Nakigozi'],['Tom','Ojok']
+  ];
+  const emails = names.map(n => `${n[0].toLowerCase()}.${n[1].toLowerCase()}@email.com`);
+  const nats = ['Ugandan','Kenyan','Tanzanian','British','American','German','French','South African'];
+  names.forEach(([fn,ln],i) => {
+    STATE.guests.push({
+      id:`G${1000+i}`, firstName:fn, lastName:ln,
+      email:emails[i], phone:`+256${7+(i%3)}0${String(Math.floor(Math.random()*9000000)+1000000)}`,
+      nationality:nats[i%nats.length],
+      vip: i<3 ? 3 : i<6 ? 2 : i<10 ? 1 : 0,
+      loyaltyPoints: Math.floor(Math.random()*5000),
+      preferences: ['High floor','Quiet room','Non-smoking','Sea view','King bed'][i%5],
+      idNumber:`ID${100000+i}`, history:[], branch:'grand',
+      createdAt: new Date(Date.now()-Math.random()*1e10).toISOString()
+    });
+  });
+
+  const roomTypes = [
+    {type:'Standard',price:150000,cap:2},
+    {type:'Deluxe',price:250000,cap:2},
+    {type:'Suite',price:450000,cap:4},
+    {type:'Executive',price:350000,cap:2},
+    {type:'Presidential',price:800000,cap:6}
+  ];
+  const features = ['WiFi,AC,TV','WiFi,AC,TV,Minibar','WiFi,AC,TV,Minibar,Jacuzzi','WiFi,AC,TV,Mini-kitchen','WiFi,AC,TV,Butler,Pool Access'];
+  const statuses = ['available','available','available','available','occupied','occupied','reserved','cleaning','maintenance'];
+  for(let i=1;i<=30;i++){
+    const tIdx = (i-1)%5;
+    const rt = roomTypes[tIdx];
+    STATE.rooms.push({
+      id:`R${100+i}`, number:String(100+i), type:rt.type, price:rt.price,
+      floor:Math.ceil(i/6), capacity:rt.cap,
+      status: i<=24 ? statuses[i%statuses.length] : 'available',
+      features:features[tIdx], branch:'grand',
+      lastCleaned: new Date(Date.now()-Math.random()*8.64e7).toISOString()
+    });
+  }
+
+  const today = new Date();
+  const bkStatuses = ['confirmed','confirmed','checked_in','checked_in','checked_out','pending'];
+  for(let i=0;i<25;i++){
+    const ci = new Date(today); ci.setDate(ci.getDate() - 3 + i%10);
+    const co = new Date(ci); co.setDate(co.getDate() + 1+Math.floor(Math.random()*5));
+    const g = STATE.guests[i%STATE.guests.length];
+    const r = STATE.rooms[i%STATE.rooms.length];
+    const nights = Math.ceil((co-ci)/864e5);
+    const total = r.price * nights;
+    const bkSt = bkStatuses[i%bkStatuses.length];
+    const bk = {
+      id:`BK${2000+i}`, guestId:g.id, roomId:r.id,
+      checkin: ci.toISOString().split('T')[0],
+      checkout: co.toISOString().split('T')[0],
+      nights, total, status:bkSt,
+      paymentStatus: i%3===0?'paid':i%3===1?'partial':'unpaid',
+      paymentMethod:'Cash', numGuests:1+i%3,
+      requests:'', createdAt:new Date(ci.getTime()-86400000).toISOString(), branch:'grand'
+    };
+    STATE.bookings.push(bk);
+    if(bkSt==='checked_in'||bkSt==='checked_out'||bk.paymentStatus==='paid'){
+      STATE.payments.push({
+        id:`PAY${3000+i}`, bookingId:bk.id,
+        amount: bk.paymentStatus==='partial' ? Math.floor(total*0.5) : total,
+        method: ['Cash','Card','Mobile Money'][i%3],
+        status: bk.paymentStatus==='paid'?'completed':'partial',
+        timestamp: new Date(ci.getTime()-3600000).toISOString(), branch:'grand'
+      });
+    }
+  }
+
+  const staffData = [
+    {name:'Sarah Nakato',role:'manager',dept:'Management',shift:'Morning (6AM-2PM)'},
+    {name:'Tom Ojok',role:'receptionist',dept:'Front Desk',shift:'Morning (6AM-2PM)'},
+    {name:'Grace Atim',role:'receptionist',dept:'Front Desk',shift:'Afternoon (2PM-10PM)'},
+    {name:'Moses Kato',role:'housekeeping',dept:'Housekeeping',shift:'Morning (6AM-2PM)'},
+    {name:'Fatuma Ali',role:'housekeeping',dept:'Housekeeping',shift:'Afternoon (2PM-10PM)'},
+    {name:'John Mwangi',role:'maintenance',dept:'Engineering',shift:'Morning (6AM-2PM)'},
+    {name:'Peter Eze',role:'maintenance',dept:'Engineering',shift:'Night (10PM-6AM)'},
+    {name:'Admin User',role:'admin',dept:'IT',shift:'Morning (6AM-2PM)'}
+  ];
+  staffData.forEach((s,i)=>STATE.staff.push({
+    id:`S${4000+i}`, ...s, email:`${s.name.toLowerCase().replace(' ','.')}@hotel.com`,
+    phone:`+256${7+(i%3)}0${1234567+i}`, status:'active', branch:'grand',
+    createdAt:new Date(Date.now()-Math.random()*1e10).toISOString()
+  }));
+
+  // Housekeeping tasks
+  const hkTypes = ['Standard Clean','Deep Clean','VIP Turndown','Post Checkout'];
+  const hkStatuses = ['pending','in_progress','completed'];
+  for(let i=0;i<8;i++){
+    STATE.housekeeping.push({
+      id:`HK${5000+i}`, roomId:STATE.rooms[i].id,
+      type:hkTypes[i%hkTypes.length], priority:['high','medium','low'][i%3],
+      status:hkStatuses[i%3], staffId:STATE.staff[3+(i%2)].id,
+      notes:'', createdAt:new Date().toISOString(), branch:'grand',
+      startedAt: i<4 ? new Date().toISOString() : null,
+      completedAt: i<2 ? new Date().toISOString() : null
+    });
+  }
+
+  // Maintenance tickets
+  const issues = ['AC not working','Plumbing leak','Broken lock','TV malfunction','Water heater issue','WiFi outage'];
+  for(let i=0;i<5;i++){
+    STATE.maintenance.push({
+      id:`MT${6000+i}`, roomId:STATE.rooms[i+5].id,
+      title:issues[i], description:`Reported: ${issues[i]}. Needs immediate attention.`,
+      priority:['high','medium','medium','low','high'][i],
+      status:['open','in_progress','open','resolved','open'][i],
+      technicianId:STATE.staff[5+(i%2)].id,
+      createdAt:new Date(Date.now()-Math.random()*8.64e7).toISOString(), branch:'grand',
+      resolvedAt: i===3 ? new Date().toISOString() : null
+    });
+  }
+
+  // Initial notifications
+  pushNotif('🏨','System','HotelOS Pro initialized successfully','info');
+  pushNotif('🌟','VIP Arrival','Alice Nakato (VIP Platinum) arriving today','vip');
+  pushNotif('🔧','Maintenance','3 open maintenance tickets require attention','warning');
+  pushNotif('🧹','Housekeeping','5 rooms pending cleaning assignment','info');
+
+  // Seed audit
+  addAudit('System','init','System','HotelOS Pro started','','','');
+}
+
+// ================================================================ EVENTS ================================================================
+const Events = {
+  listeners:{},
+  on(e,cb){ if(!Events.listeners[e]) Events.listeners[e]=[]; Events.listeners[e].push(cb); },
+  emit(e,data){ (Events.listeners[e]||[]).forEach(cb=>cb(data)); }
+};
+
+Events.on('guest_created', d=>{ pushNotif('👤','New Guest',`${d.firstName} ${d.lastName} added`,'info'); addAudit(STATE.currentUser?.name||'System','guest_created','Guests',`${d.firstName} ${d.lastName}`,'','',d.id); });
+Events.on('room_booked', d=>{ pushNotif('📅','New Booking',`Room ${d.roomNum} booked for ${d.guestName}`,'info'); addAudit(STATE.currentUser?.name||'System','room_booked','Bookings',d.id,'',d.roomNum,''); });
+Events.on('checkin_completed', d=>{ pushNotif('✅','Check-in',`${d.guestName} checked into Room ${d.roomNum}`,'success'); addAudit(STATE.currentUser?.name||'System','checkin_completed','Check-in',d.bookingId,'reserved','occupied',''); });
+Events.on('checkout_completed', d=>{ pushNotif('🚪','Check-out',`${d.guestName} checked out from Room ${d.roomNum}`,'info'); addAudit(STATE.currentUser?.name||'System','checkout_completed','Check-out',d.bookingId,'occupied','available',''); });
+Events.on('payment_received', d=>{ pushNotif('💳','Payment',`UGX ${fmt(d.amount)} received for ${d.bookingId}`,'success'); addAudit(STATE.currentUser?.name||'System','payment_received','Billing',d.id,'unpaid','paid',''); });
+Events.on('maintenance_created', d=>{ pushNotif('🔧','Maintenance',`Ticket #${d.id}: ${d.title}`,'warning'); addAudit(STATE.currentUser?.name||'System','maintenance_created','Maintenance',d.id,'','open',''); });
+
+// ================================================================ AUTH ================================================================
+const USERS = [
+  {username:'admin',password:'admin123',name:'Admin User',role:'admin',branch:'grand'},
+  {username:'manager',password:'mgr123',name:'Sarah Nakato',role:'manager',branch:'grand'},
+  {username:'reception',password:'rec123',name:'Tom Ojok',role:'receptionist',branch:'grand'},
+  {username:'housekeeping',password:'hk123',name:'Moses Kato',role:'housekeeping',branch:'grand'},
+  {username:'maintenance',password:'mt123',name:'John Mwangi',role:'maintenance',branch:'grand'}
+];
+
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value.trim();
+  const b=document.getElementById('loginBranch').value;
+  const user=USERS.find(x=>x.username===u&&x.password===p);
+  if(!user){toast('Invalid username or password','error');return;}
+  STATE.currentUser=user; STATE.currentBranch=b;
+  localStorage.setItem('hms_session',JSON.stringify({user,branch:b,ts:Date.now()}));
+  bootApp();
+}
+
+function quickLogin(role){
+  const map={admin:'admin',manager:'manager',receptionist:'reception',housekeeping:'housekeeping',maintenance:'maintenance'};
+  document.getElementById('loginUser').value=map[role]||'admin';
+  document.getElementById('loginPass').value={admin:'admin123',manager:'mgr123',receptionist:'rec123',housekeeping:'hk123',maintenance:'mt123'}[role];
+  doLogin();
+}
+
+function doLogout(){
+  localStorage.removeItem('hms_session');
+  STATE.currentUser=null;
+  closeAccountMenu();
+  closeSidebar();
+  resetSidebarVisibility();
+  document.getElementById('appShell').style.display='none';
+  document.getElementById('loginPage').style.display='flex';
+  toast('Logged out successfully','info');
+}
+
+function switchRole(role){
+  const map={admin:'admin',manager:'manager',receptionist:'reception',housekeeping:'housekeeping',maintenance:'maintenance'};
+  const username=map[role];
+  const user=USERS.find(x=>x.username===username);
+  if(!user){toast('Role not found','error');return;}
+  closeAccountMenu();
+  closeSidebar();
+  resetSidebarVisibility();
+  STATE.currentUser=user;
+  localStorage.setItem('hms_session',JSON.stringify({user,branch:STATE.currentBranch,ts:Date.now()}));
+  toast(`Switched to ${user.name} (${role.charAt(0).toUpperCase()+role.slice(1)})`,'success');
+  bootApp();
+}
+
+function resetSidebarVisibility(){
+  document.querySelectorAll('.nav-item').forEach(n=>{ n.style.display=''; });
+}
+
+function toggleAccountMenu(){
+  const menu=document.getElementById('accountMenu');
+  const isOpen=menu.classList.contains('open');
+  if(isOpen){ closeAccountMenu(); } else {
+    menu.classList.add('open');
+    document.getElementById('accountMenuName').textContent=STATE.currentUser?.name||'';
+    document.getElementById('accountMenuRole').textContent=(STATE.currentUser?.role||'').replace(/^\w/,c=>c.toUpperCase());
+    document.getElementById('userAvatarBig').textContent=(STATE.currentUser?.name||'?').charAt(0).toUpperCase();
+    document.querySelectorAll('.account-menu-item[onclick*="switchRole"]').forEach(item=>{
+      const roleMatch=item.getAttribute('onclick').match(/switchRole\('(\w+)'\)/);
+      item.classList.toggle('role-active', roleMatch && roleMatch[1]===STATE.currentUser?.role);
+    });
+  }
+}
+function closeAccountMenu(){ document.getElementById('accountMenu')?.classList.remove('open'); }
+
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar');
+  const ov=document.getElementById('sidebarOverlay');
+  const isOpen=sb.classList.contains('open');
+  if(isOpen){ closeSidebar(); } else { sb.classList.add('open'); ov.classList.add('open'); }
+}
+function closeSidebar(){
+  document.getElementById('sidebar')?.classList.remove('open');
+  document.getElementById('sidebarOverlay')?.classList.remove('open');
+}
+
+// Close account menu / sidebar drawer when clicking outside them
+document.addEventListener('click', e=>{
+  const menu=document.getElementById('accountMenu');
+  const chip=document.getElementById('userChipBtn');
+  if(menu && menu.classList.contains('open') && !menu.contains(e.target) && !chip?.contains(e.target)){
+    closeAccountMenu();
+  }
+});
+
+function bootApp(){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('appShell').style.display='flex';
+  document.getElementById('userName').textContent=STATE.currentUser.name;
+  document.getElementById('userRoleTag').textContent=STATE.currentUser.role.charAt(0).toUpperCase()+STATE.currentUser.role.slice(1);
+  document.getElementById('userAvatar').textContent=STATE.currentUser.name.charAt(0).toUpperCase();
+  document.getElementById('branchChip').textContent=getBranch(STATE.currentBranch)?.name||'';
+  document.getElementById('dashBranchSub').textContent=`${getBranch(STATE.currentBranch)?.name} — Live Overview`;
+  applyRoleUI();
+  showPage('dashboard');
+  startClock();
+  startSimulation();
+  updateBadges();
+  if(typeof resetSessionTimer==='function') resetSessionTimer();
+  if(typeof simulateRevenueAccrual==='function') simulateRevenueAccrual();
+  if(typeof injectShortcutHint==='function') setTimeout(injectShortcutHint,2000);
+  if(typeof startLiveCounters==='function') startLiveCounters();
+}
+
+function applyRoleUI(){
+  resetSidebarVisibility();
+  const role=STATE.currentUser?.role;
+  const pageToPerm={
+    dashboard:'all', bookings:'bookings', checkin:'checkin', checkout:'checkout',
+    rooms:'rooms_view', housekeeping:'housekeeping', maintenance:'maintenance',
+    billing:'billing', guests:'guests', staff:'staff', revenue:'revenue',
+    branches:'all', audit:'audit', settings:'all'
+  };
+  if(role==='admin') return; // full access
+  document.querySelectorAll('.nav-item[data-page]').forEach(n=>{
+    const p=n.dataset.page;
+    const perm=pageToPerm[p];
+    if(perm==='all') return; // dashboard/branches/settings visible to everyone logged in
+    if(!hasPermission(perm) && !hasPermission('rooms')) n.style.display='none';
+  });
+  // Rooms page also viewable if user has full 'rooms' or just 'rooms_view'
+  document.querySelectorAll('[data-page="rooms"]').forEach(n=>{
+    if(!hasPermission('rooms_view') && !hasPermission('rooms')) n.style.display='none';
+  });
+}
+
+function hasPermission(action){
+  const perms=PERMISSIONS[STATE.currentUser?.role]||[];
+  return perms.includes('all')||perms.includes(action);
+}
+
+// ================================================================ CLOCK & SIMULATION ================================================================
+function startClock(){
+  setInterval(()=>{
+    STATE.systemTime = new Date();
+    document.getElementById('sysClock').textContent = STATE.systemTime.toLocaleTimeString();
+  },1000);
+}
+
+function startSimulation(){
+  setInterval(()=>{
+    simulateBookingExpiry();
+    simulateCleaningProgress();
+    updateBadges();
+  }, 30000);
+
+  setInterval(()=>{
+    if(document.getElementById('page-dashboard').classList.contains('active')) refreshDashboard();
+  }, 15000);
+}
+
+function simulateBookingExpiry(){
+  const now=new Date();
+  STATE.bookings.filter(b=>b.status==='pending').forEach(b=>{
+    const created=new Date(b.createdAt);
+    const diff=(now-created)/3600000;
+    if(diff>24){
+      b.status='cancelled';
+      pushNotif('⚠️','Booking Expired',`Booking ${b.id} auto-cancelled (unpaid > 24h)`,'warning');
+    }
+  });
+}
+
+function simulateCleaningProgress(){
+  STATE.housekeeping.filter(h=>h.status==='in_progress').forEach(h=>{
+    const started=new Date(h.startedAt);
+    const elapsed=(new Date()-started)/60000;
+    if(elapsed>30){
+      h.status='completed';
+      h.completedAt=new Date().toISOString();
+      const room=STATE.rooms.find(r=>r.id===h.roomId);
+      if(room && room.status==='cleaning'){
+        room.status='available';
+        room.lastCleaned=new Date().toISOString();
+      }
+    }
+  });
+}
+
+// ================================================================ NAVIGATION ================================================================
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const el=document.getElementById('page-'+page);
+  if(el) el.classList.add('active');
+  document.querySelectorAll(`[data-page="${page}"]`).forEach(n=>n.classList.add('active'));
+  renderPage(page);
+  closeSidebar();
+  const ci=document.getElementById('contentInner');
+  if(ci && typeof ci.scrollTo==='function') ci.scrollTo({top:0,behavior:'instant'});
+  else if(ci) ci.scrollTop=0;
+}
+
+function renderPage(page){
+  switch(page){
+    case 'dashboard':    renderDashboard(); break;
+    case 'bookings':     renderBookings(); break;
+    case 'checkin':      renderCheckin(); break;
+    case 'checkout':     renderCheckout(); break;
+    case 'rooms':        renderRooms(); break;
+    case 'housekeeping': renderHousekeeping(); break;
+    case 'maintenance':  renderMaintenance(); break;
+    case 'billing':      renderBilling(); break;
+    case 'guests':       renderGuests(); break;
+    case 'staff':        renderStaff(); break;
+    case 'revenue':      renderRevenue(); break;
+    case 'branches':     renderBranches(); break;
+    case 'audit':        renderAudit(); break;
+    case 'settings':     renderSettings(); break;
+    case 'profile':      renderProfile(); break;
+  }
+}
+
+// ================================================================ DASHBOARD ================================================================
+function refreshDashboard(){ renderDashboard(); }
+function renderDashboard(){
+  const rooms=getBranchRooms();
+  const bookings=getBranchBookings();
+  const today=new Date().toISOString().split('T')[0];
+
+  const occupied=rooms.filter(r=>r.status==='occupied').length;
+  const available=rooms.filter(r=>r.status==='available').length;
+  const cleaning=rooms.filter(r=>r.status==='cleaning').length;
+  const maint=rooms.filter(r=>r.status==='maintenance').length;
+  const occupancyRate=rooms.length>0?Math.round((occupied/rooms.length)*100):0;
+
+  const todayRevenue=STATE.payments.filter(p=>p.branch===STATE.currentBranch&&p.timestamp.startsWith(today)).reduce((s,p)=>s+p.amount,0);
+  const totalRevenue=STATE.payments.filter(p=>p.branch===STATE.currentBranch).reduce((s,p)=>s+p.amount,0);
+  const adr=occupied>0?Math.round(todayRevenue/Math.max(occupied,1)):0;
+  const revpar=rooms.length>0?Math.round(todayRevenue/rooms.length):0;
+
+  const statsEl=document.getElementById('dashStats');
+  statsEl.innerHTML=`
+    <div class="stat-card blue">
+      <div class="stat-label">Occupancy Rate</div>
+      <div class="stat-value">${occupancyRate}%</div>
+      <div class="occ-meter"><div class="occ-fill" style="width:${occupancyRate}%"></div></div>
+      <div class="stat-sub">${occupied} of ${rooms.length} rooms</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Today's Revenue</div>
+      <div class="stat-value" style="font-size:20px">UGX ${fmtShort(todayRevenue)}</div>
+      <div class="stat-sub">Total: ${fmtShort(totalRevenue)}</div>
+      <div class="stat-trend up">↑ Revenue tracking</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-label">ADR</div>
+      <div class="stat-value" style="font-size:20px">UGX ${fmtShort(adr)}</div>
+      <div class="stat-sub">Avg Daily Rate</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-label">RevPAR</div>
+      <div class="stat-value" style="font-size:20px">UGX ${fmtShort(revpar)}</div>
+      <div class="stat-sub">Rev per Available Room</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Active Bookings</div>
+      <div class="stat-value">${bookings.filter(b=>['confirmed','checked_in'].includes(b.status)).length}</div>
+      <div class="stat-sub">${bookings.filter(b=>b.status==='pending').length} pending</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">Maintenance Open</div>
+      <div class="stat-value">${STATE.maintenance.filter(m=>m.branch===STATE.currentBranch&&m.status!=='resolved').length}</div>
+      <div class="stat-sub">${maint} rooms affected</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-label">Cleaning Queue</div>
+      <div class="stat-value">${STATE.housekeeping.filter(h=>h.branch===STATE.currentBranch&&h.status!=='completed').length}</div>
+      <div class="stat-sub">${cleaning} rooms cleaning</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-label">Total Guests</div>
+      <div class="stat-value">${STATE.guests.filter(g=>g.branch===STATE.currentBranch).length}</div>
+      <div class="stat-sub">${STATE.guests.filter(g=>g.vip>0&&g.branch===STATE.currentBranch).length} VIP profiles</div>
+    </div>
+  `;
+
+  // Revenue chart
+  const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const vals=[420000,380000,510000,630000,720000,890000,650000].map(v=>v+Math.floor(Math.random()*100000));
+  const maxV=Math.max(...vals);
+  document.getElementById('revenueChart').innerHTML=`<div class="chart-bars">${vals.map((v,i)=>`
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" data-val="UGX ${fmtShort(v)}" style="height:${Math.round((v/maxV)*120)}px;background:${i===6?'var(--gold)':'var(--accent)'}"></div>
+      <div class="chart-label">${days[i]}</div>
+    </div>`).join('')}</div>`;
+
+  // Room status chart
+  const statColors={available:'var(--green)',occupied:'var(--accent)',reserved:'var(--gold)',cleaning:'var(--orange)',maintenance:'var(--red)'};
+  const statCounts={available,occupied,reserved:rooms.filter(r=>r.status==='reserved').length,cleaning,maintenance:maint};
+  document.getElementById('roomStatusChart').innerHTML=Object.entries(statCounts).map(([k,v])=>`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="width:10px;height:10px;border-radius:50%;background:${statColors[k]};flex-shrink:0"></div>
+      <span style="font-size:13px;color:var(--text2);flex:1;text-transform:capitalize">${k}</span>
+      <span style="font-size:13px;font-weight:700;color:var(--text)">${v}</span>
+      <div style="width:80px"><div class="progress"><div class="progress-bar" style="background:${statColors[k]};width:${rooms.length>0?Math.round((v/rooms.length)*100):0}%"></div></div></div>
+    </div>`).join('');
+
+  // Today arrivals/departures
+  const arrivals=bookings.filter(b=>b.checkin===today&&b.status==='confirmed');
+  const departures=bookings.filter(b=>b.checkout===today&&b.status==='checked_in');
+
+  document.getElementById('todayArrivals').innerHTML=arrivals.length===0?
+    '<div class="empty-state"><div class="empty-icon">✈️</div><div class="empty-text">No arrivals today</div></div>':
+    arrivals.map(b=>{const g=getGuest(b.guestId);const r=getRoom(b.roomId);return `
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700">${g?g.firstName.charAt(0):''}</div>
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:13px">${g?g.firstName+' '+g.lastName:'Unknown'} ${g?.vip?'<span class="badge vip">VIP</span>':''}</div>
+          <div style="font-size:11px;color:var(--text3)">Room ${r?.number} · ${b.nights} night${b.nights>1?'s':''}</div>
+        </div>
+        <button class="btn btn-sm btn-success" onclick="doCheckin('${b.id}')">Check In</button>
+      </div>`}).join('');
+
+  document.getElementById('todayDepartures').innerHTML=departures.length===0?
+    '<div class="empty-state"><div class="empty-icon">🚪</div><div class="empty-text">No departures today</div></div>':
+    departures.map(b=>{const g=getGuest(b.guestId);const r=getRoom(b.roomId);return `
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--red));display:flex;align-items:center;justify-content:center;font-weight:700">${g?g.firstName.charAt(0):''}</div>
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:13px">${g?g.firstName+' '+g.lastName:'Unknown'}</div>
+          <div style="font-size:11px;color:var(--text3)">Room ${r?.number} · Balance: ${b.paymentStatus==='paid'?'<span style="color:var(--green)">Settled</span>':'<span style="color:var(--red)">UGX '+fmtShort(b.total)+'</span>'}</div>
+        </div>
+        <button class="btn btn-sm btn-warning" onclick="doCheckout('${b.id}')">Check Out</button>
+      </div>`}).join('');
+}
+
+// ================================================================ BOOKINGS ================================================================
+function renderBookings(){
+  const bks=getBranchBookings();
+  const tbody=document.getElementById('bookingsTableBody');
+  tbody.innerHTML=bks.length===0?`<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text3)">No bookings found</td></tr>`:
+    bks.map(b=>{
+      const g=getGuest(b.guestId), r=getRoom(b.roomId);
+      return `<tr>
+        <td data-label="Booking ID"><span style="font-family:monospace;color:var(--accent)">${b.id}</span></td>
+        <td data-label="Guest" class="td-name">${g?g.firstName+' '+g.lastName:'Unknown'} ${g?.vip?'⭐':''}</td>
+        <td data-label="Room">Room ${r?.number} (${r?.type})</td>
+        <td data-label="Check-in">${fmtDate(b.checkin)}</td>
+        <td data-label="Check-out">${fmtDate(b.checkout)}</td>
+        <td data-label="Status"><span class="badge ${b.status.replace('_','-')}">${b.status.replace('_',' ')}</span></td>
+        <td data-label="Payment"><span class="badge ${b.paymentStatus}">${b.paymentStatus}</span></td>
+        <td data-label="Total" style="font-weight:700;color:var(--gold)">UGX ${fmt(b.total)}</td>
+        <td data-label="Actions">
+          ${b.status==='confirmed'?`<button class="btn btn-sm btn-success" onclick="doCheckin('${b.id}')">Check In</button>`:''}
+          ${b.status==='checked_in'?`<button class="btn btn-sm btn-warning" onclick="doCheckout('${b.id}')">Check Out</button>`:''}
+          ${b.paymentStatus!=='paid'&&b.status!=='cancelled'?`<button class="btn btn-sm btn-primary" onclick="showPayment('${b.id}')">Pay</button>`:''}
+          ${['confirmed','pending'].includes(b.status)?`<button class="btn btn-sm btn-danger" onclick="cancelBooking('${b.id}')">Cancel</button>`:''}
+          <button class="btn btn-sm btn-secondary" onclick="viewInvoice('${b.id}')">Invoice</button>
+        </td>
+
+      </tr>`;}).join('');
+}
+
+function filterBookings(){
+  const search=document.getElementById('bookingSearch').value.toLowerCase();
+  const status=document.getElementById('bookingStatusFilter').value;
+  const rows=document.querySelectorAll('#bookingsTableBody tr');
+  rows.forEach(row=>{
+    const txt=row.textContent.toLowerCase();
+    const matchSearch=!search||txt.includes(search);
+    const matchStatus=!status||txt.includes(status.replace('_',' '));
+    row.style.display=matchSearch&&matchStatus?'':'none';
+  });
+}
+
+function createBooking(){
+  if(typeof UndoRedo!=='undefined') UndoRedo.snapshot('New Booking');
+  const gId=document.getElementById('bkGuest').value;
+  const rId=document.getElementById('bkRoom').value;
+  const ci=document.getElementById('bkCheckin').value;
+  const co=document.getElementById('bkCheckout').value;
+  const method=document.getElementById('bkPayMethod').value;
+  const ng=parseInt(document.getElementById('bkNumGuests').value)||1;
+  const req=document.getElementById('bkRequests').value;
+
+  if(!gId||!rId||!ci||!co){toast('Please fill in all required fields','error');return;}
+  if(new Date(co)<=new Date(ci)){toast('Check-out must be after check-in','error');return;}
+
+  // Double booking check
+  const conflict=STATE.bookings.find(b=>b.roomId===rId&&b.status!=='cancelled'&&b.status!=='checked_out'&&!(co<=b.checkin||ci>=b.checkout));
+  if(conflict){toast(`Room conflict: already booked for overlapping dates (${conflict.id})`,'error');return;}
+
+  const room=getRoom(rId);
+  const nights=Math.ceil((new Date(co)-new Date(ci))/864e5);
+  const total=room.price*nights;
+  const bk={
+    id:`BK${2000+STATE.bookings.length}`, guestId:gId, roomId:rId,
+    checkin:ci, checkout:co, nights, total,
+    status:'confirmed', paymentStatus:'unpaid', paymentMethod:method,
+    numGuests:ng, requests:req, createdAt:new Date().toISOString(), branch:STATE.currentBranch
+  };
+
+  STATE.bookings.push(bk);
+  const r=getRoom(rId);
+  if(r) r.status='reserved';
+  const g=getGuest(gId);
+  Events.emit('room_booked',{id:bk.id,roomNum:r?.number,guestName:g?g.firstName+' '+g.lastName:'Guest'});
+  closeModal('newBookingModal');
+  toast(`Booking ${bk.id} created successfully`,'success');
+  renderPage(getCurrentPage());
+  updateBadges();
+  saveLocal();
+}
+
+function doCheckin(bkId){
+  if(typeof UndoRedo!=='undefined') UndoRedo.snapshot('Check-in');
+  const bk=STATE.bookings.find(b=>b.id===bkId);
+  if(!bk){toast('Booking not found','error');return;}
+  if(bk.status==='checked_in'){toast('Guest already checked in','warning');return;}
+  if(bk.status==='cancelled'){toast('Booking is cancelled','error');return;}
+
+  bk.status='checked_in'; bk.checkinTime=new Date().toISOString();
+  const room=getRoom(bk.roomId);
+  if(room) room.status='occupied';
+  const g=getGuest(bk.guestId);
+  if(g){ g.history=g.history||[]; g.history.push({type:'checkin',bookingId:bkId,date:new Date().toISOString()}); }
+  Events.emit('checkin_completed',{bookingId:bkId,guestName:g?g.firstName+' '+g.lastName:'Guest',roomNum:room?.number});
+  toast(`✅ ${g?.firstName} checked in to Room ${room?.number}`,'success');
+  renderPage(getCurrentPage());
+  updateBadges();
+  saveLocal();
+}
+
+function doCheckout(bkId){
+  if(typeof UndoRedo!=='undefined') UndoRedo.snapshot('Check-out');
+  const bk=STATE.bookings.find(b=>b.id===bkId);
+  if(!bk){toast('Booking not found','error');return;}
+  if(bk.status!=='checked_in'){toast('Guest is not checked in','error');return;}
+
+  if(bk.paymentStatus!=='paid'){
+    const confirmPay=confirm(`Outstanding balance: UGX ${fmt(bk.total)}. Process payment now?`);
+    if(confirmPay){ processPayment(bkId, bk.total, 'Cash'); }
+    else { toast('Checkout requires payment settlement','warning'); return; }
+  }
+
+  bk.status='checked_out'; bk.checkoutTime=new Date().toISOString();
+  const room=getRoom(bk.roomId);
+  if(room) room.status='cleaning';
+
+  // Auto-create housekeeping task
+  STATE.housekeeping.push({
+    id:`HK${5000+STATE.housekeeping.length}`, roomId:bk.roomId,
+    type:'Post Checkout', priority:'high', status:'pending',
+    staffId:STATE.staff.find(s=>s.role==='housekeeping'&&s.branch===STATE.currentBranch)?.id||STATE.staff[3].id,
+    notes:'Post-checkout cleaning required', createdAt:new Date().toISOString(), branch:STATE.currentBranch,
+    startedAt:null, completedAt:null
+  });
+
+  const g=getGuest(bk.guestId);
+  if(g){
+    g.loyaltyPoints=(g.loyaltyPoints||0)+Math.floor(bk.total/10000);
+    g.history=g.history||[]; g.history.push({type:'checkout',bookingId:bkId,date:new Date().toISOString()});
+  }
+  Events.emit('checkout_completed',{bookingId:bkId,guestName:g?g.firstName+' '+g.lastName:'Guest',roomNum:room?.number});
+  toast(`🚪 ${g?.firstName} checked out from Room ${room?.number}. Cleaning queued.`,'info');
+  renderPage(getCurrentPage());
+  updateBadges();
+  saveLocal();
+}
+
+function cancelBooking(bkId){
+  if(!confirm('Cancel this booking?')) return;
+  if(typeof UndoRedo!=='undefined') UndoRedo.snapshot('Cancel Booking');
+  const bk=STATE.bookings.find(b=>b.id===bkId);
+  if(!bk) return;
+  bk.status='cancelled';
+  const room=getRoom(bk.roomId);
+  if(room&&room.status==='reserved') room.status='available';
+  addAudit(STATE.currentUser?.name||'System','cancel_booking','Bookings',bkId,'confirmed','cancelled','');
+  toast(`Booking ${bkId} cancelled`,'warning');
+  renderPage(getCurrentPage());
+  updateBadges();
+  saveLocal();
+}
+
+function showPayment(bkId){
+  const bk=STATE.bookings.find(b=>b.id===bkId);
+  if(!bk) return;
+  const method=prompt(`Process payment for Booking ${bkId}\nAmount: UGX ${fmt(bk.total)}\nEnter payment method (Cash/Card/Mobile Money):`,'Cash');
+  if(!method) return;
+  processPayment(bkId, bk.total, method);
+  renderPage(getCurrentPage());
+}
+
+function processPayment(bkId, amount, method){
+  const bk=STATE.bookings.find(b=>b.id===bkId);
+  if(!bk){toast('Booking not found','error');return;}
+  if(bk.paymentStatus==='paid'){toast('Already paid','warning');return;}
+  if(amount<0){toast('Invalid amount','error');return;}
+
+  const pay={
+    id:`PAY${3000+STATE.payments.length}`, bookingId:bkId,
+    amount, method:method||bk.paymentMethod, status:'completed',
+    timestamp:new Date().toISOString(), branch:STATE.currentBranch
+  };
+  STATE.payments.push(pay);
+  bk.paymentStatus='paid';
+  Events.emit('payment_received',pay);
+  toast(`Payment of UGX ${fmt(amount)} received`,'success');
+  updateBadges();
+  saveLocal();
+}
+
+// ================================================================ CHECKIN PAGE ================================================================
+function renderCheckin(){
+  const today=new Date().toISOString().split('T')[0];
+  const arrivals=getBranchBookings().filter(b=>b.checkin===today&&b.status==='confirmed');
+  const el=document.getElementById('checkinList');
+  el.innerHTML=arrivals.length===0?
+    '<div class="empty-state"><div class="empty-icon">✈️</div><div class="empty-text">No arrivals scheduled today</div></div>':
+    arrivals.map(b=>{const g=getGuest(b.guestId),r=getRoom(b.roomId);return `
+      <div class="ticket-card">
+        <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--green),#1a9e78);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0">${g?.firstName?.charAt(0)||'?'}</div>
+        <div class="ticket-body">
+          <div class="ticket-title">${g?g.firstName+' '+g.lastName:'Unknown'} ${g?.vip>=2?'<span class="badge vip">⭐ VIP</span>':''}</div>
+          <div class="ticket-meta">Room ${r?.number} (${r?.type}) · ${b.nights} night${b.nights>1?'s':''} · ${b.numGuests} guest${b.numGuests>1?'s':''}</div>
+          <div class="ticket-meta" style="margin-top:2px">Booking: ${b.id} · ${b.paymentStatus==='paid'?'<span style="color:var(--green)">Paid</span>':'<span style="color:var(--red)">Balance: UGX '+fmt(b.total)+'</span>'}</div>
+          ${g?.preferences?`<div class="ticket-meta" style="margin-top:2px;color:var(--accent)">Pref: ${g.preferences}</div>`:''}
+          <div class="ticket-actions">
+            <button class="btn btn-sm btn-success" onclick="doCheckin('${b.id}')">✅ Check In</button>
+            <button class="btn btn-sm btn-secondary" onclick="viewInvoice('${b.id}')">Invoice</button>
+            ${b.paymentStatus!=='paid'?`<button class="btn btn-sm btn-primary" onclick="showPayment('${b.id}')">Collect Payment</button>`:''}
+          </div>
+        </div>
+      </div>`}).join('');
+}
+
+function searchCheckin(){
+  const q=document.getElementById('checkinSearch').value.toLowerCase().trim();
+  const el=document.getElementById('checkinSearchResult');
+  if(!q){el.innerHTML='';return;}
+  const results=STATE.bookings.filter(b=>b.status==='confirmed'&&(b.id.toLowerCase().includes(q)||getGuest(b.guestId)?.firstName?.toLowerCase().includes(q)||getGuest(b.guestId)?.lastName?.toLowerCase().includes(q)));
+  el.innerHTML=results.length===0?'<div style="color:var(--text3);font-size:13px;padding:10px 0">No matching bookings found</div>':
+    results.slice(0,5).map(b=>{const g=getGuest(b.guestId),r=getRoom(b.roomId);return `
+      <div style="padding:12px;background:var(--surface2);border-radius:var(--radius);margin-bottom:8px">
+        <div style="font-weight:700">${b.id} — ${g?g.firstName+' '+g.lastName:'Unknown'}</div>
+        <div style="font-size:12px;color:var(--text3)">Room ${r?.number} · ${fmtDate(b.checkin)} to ${fmtDate(b.checkout)}</div>
+        <button class="btn btn-sm btn-success" style="margin-top:8px" onclick="doCheckin('${b.id}')">Check In</button>
+      </div>`}).join('');
+}
+
+// ================================================================ CHECKOUT PAGE ================================================================
+function renderCheckout(){
+  const checkedIn=getBranchBookings().filter(b=>b.status==='checked_in');
+  const today=new Date().toISOString().split('T')[0];
+  const overdue=checkedIn.filter(b=>b.checkout<today);
+  const normal=checkedIn.filter(b=>b.checkout>=today);
+
+  document.getElementById('checkoutList').innerHTML=normal.length===0?
+    '<div class="empty-state"><div class="empty-icon">🛌</div><div class="empty-text">No active check-ins</div></div>':
+    normal.map(b=>{const g=getGuest(b.guestId),r=getRoom(b.roomId);return `
+      <div class="ticket-card">
+        <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${g?.firstName?.charAt(0)||'?'}</div>
+        <div class="ticket-body">
+          <div class="ticket-title">${g?g.firstName+' '+g.lastName:'Unknown'}</div>
+          <div class="ticket-meta">Room ${r?.number} · Checkout: ${fmtDate(b.checkout)}</div>
+          <div class="ticket-meta">Balance: ${b.paymentStatus==='paid'?'<span style="color:var(--green)">Settled ✓</span>':'<span style="color:var(--red)">UGX '+fmt(b.total)+'</span>'}</div>
+          <div class="ticket-actions">
+            <button class="btn btn-sm btn-warning" onclick="doCheckout('${b.id}')">Check Out</button>
+            <button class="btn btn-sm btn-secondary" onclick="viewInvoice('${b.id}')">Invoice</button>
+          </div>
+        </div>
+      </div>`}).join('');
+
+  document.getElementById('overdueList').innerHTML=overdue.length===0?
+    '<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">No overdue check-outs</div></div>':
+    overdue.map(b=>{const g=getGuest(b.guestId),r=getRoom(b.roomId);return `
+      <div class="ticket-card" style="border-color:var(--red)">
+        <div style="width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">⚠️</div>
+        <div class="ticket-body">
+          <div class="ticket-title" style="color:var(--red)">${g?g.firstName+' '+g.lastName:'Unknown'} — OVERDUE</div>
+          <div class="ticket-meta">Room ${r?.number} · Was due: ${fmtDate(b.checkout)}</div>
+          <div class="ticket-actions">
+            <button class="btn btn-sm btn-danger" onclick="doCheckout('${b.id}')">Force Check Out</button>
+          </div>
+        </div>
+      </div>`}).join('');
+}
+
+// ================================================================ ROOMS ================================================================
+function renderRooms(){
+  const filter=document.getElementById('roomFilter')?.value||'';
+  const rooms=getBranchRooms().filter(r=>!filter||r.status===filter);
+  const grid=document.getElementById('roomsGrid');
+  grid.innerHTML=rooms.map(r=>`
+    <div class="room-card ${r.status}" draggable="true" data-room-id="${r.id}" onclick="showRoomDetail('${r.id}')">
+      <div class="room-num">${r.number}</div>
+      <div class="room-type">${r.type} · Floor ${r.floor}</div>
+      <div style="margin-bottom:8px"><span class="badge ${r.status}">${r.status}</span></div>
+      <div class="room-price">UGX ${fmtShort(r.price)}/night</div>
+      <div style="font-size:10px;color:var(--text3);margin-top:4px">${r.capacity} guests · ${r.features?.split(',').slice(0,2).join(', ')}</div>
+    </div>`).join('');
+  if(typeof enableRoomDragDrop==='function') enableRoomDragDrop();
+}
+
+function showRoomDetail(rId){
+  const room=STATE.rooms.find(r=>r.id===rId);
+  if(!room) return;
+  const currentBk=STATE.bookings.find(b=>b.roomId===rId&&b.status==='checked_in');
+  const g=currentBk?getGuest(currentBk.guestId):null;
+  const actions=[];
+  if(room.status==='available') actions.push(`<button class="btn btn-sm btn-primary" onclick="closeModal('roomDetail');showModal('newBookingModal')">Book Now</button>`);
+  if(room.status==='occupied'||room.status==='available') actions.push(`<button class="btn btn-sm btn-secondary" onclick="setRoomCleaning('${rId}')">Send for Cleaning</button>`);
+  if(room.status!=='maintenance') actions.push(`<button class="btn btn-sm btn-danger" onclick="setRoomMaintenance('${rId}')">Mark Maintenance</button>`);
+  if(room.status==='maintenance') actions.push(`<button class="btn btn-sm btn-success" onclick="setRoomAvailable('${rId}')">Mark Available</button>`);
+  if(room.status==='cleaning') actions.push(`<button class="btn btn-sm btn-success" onclick="completeRoomCleaning('${rId}')">Mark Clean ✓</button>`);
+
+  showDynModal('roomDetail',`Room ${room.number}`,`
+    <div class="form-row">
+      <div><div class="stat-label">Type</div><div style="font-weight:700">${room.type}</div></div>
+      <div><div class="stat-label">Floor</div><div style="font-weight:700">${room.floor}</div></div>
+      <div><div class="stat-label">Capacity</div><div style="font-weight:700">${room.capacity} guests</div></div>
+      <div><div class="stat-label">Rate</div><div style="font-weight:700;color:var(--gold)">UGX ${fmt(room.price)}/night</div></div>
+    </div>
+    <div style="margin:12px 0"><span class="badge ${room.status}" style="font-size:13px;padding:5px 12px">${room.status.toUpperCase()}</span></div>
+    <div style="margin-bottom:12px"><div class="stat-label">Features</div><div style="font-size:13px;color:var(--text2)">${room.features}</div></div>
+    ${g?`<div style="padding:12px;background:rgba(79,142,247,0.08);border-radius:var(--radius);margin-bottom:12px">
+      <div class="stat-label">Current Guest</div>
+      <div style="font-weight:700">${g.firstName} ${g.lastName} ${g.vip?'⭐':''}</div>
+      <div style="font-size:12px;color:var(--text3)">Booking: ${currentBk?.id} · Checkout: ${fmtDate(currentBk?.checkout)}</div>
+    </div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">${actions.join('')}</div>
+  `);
+}
+
+function setRoomCleaning(rId){ const r=STATE.rooms.find(x=>x.id===rId); if(r){r.status='cleaning'; toast(`Room ${r.number} sent for cleaning`,'info'); closeModal('roomDetail'); renderPage('rooms'); saveLocal();} }
+function setRoomMaintenance(rId){ const r=STATE.rooms.find(x=>x.id===rId); if(r){r.status='maintenance'; toast(`Room ${r.number} marked for maintenance`,'warning'); closeModal('roomDetail'); renderPage('rooms'); saveLocal();} }
+function setRoomAvailable(rId){ const r=STATE.rooms.find(x=>x.id===rId); if(r){r.status='available'; toast(`Room ${r.number} marked available`,'success'); closeModal('roomDetail'); renderPage('rooms'); saveLocal();} }
+function completeRoomCleaning(rId){ const r=STATE.rooms.find(x=>x.id===rId); if(r){r.status='available'; r.lastCleaned=new Date().toISOString(); toast(`Room ${r.number} cleaning complete ✓`,'success'); closeModal('roomDetail'); renderPage('rooms'); saveLocal();} }
+
+function addRoom(){
+  const num=document.getElementById('rmNum').value.trim();
+  const type=document.getElementById('rmType').value;
+  const floor=parseInt(document.getElementById('rmFloor').value);
+  const cap=parseInt(document.getElementById('rmCap').value);
+  const price=parseInt(document.getElementById('rmPrice').value);
+  const feats=document.getElementById('rmFeatures').value;
+  if(!num||!price){toast('Please fill in room number and price','error');return;}
+  if(STATE.rooms.find(r=>r.number===num&&r.branch===STATE.currentBranch)){toast('Room number already exists','error');return;}
+  STATE.rooms.push({id:`R${100+STATE.rooms.length}`,number:num,type,price,floor,capacity:cap,status:'available',features:feats,branch:STATE.currentBranch,lastCleaned:new Date().toISOString()});
+  closeModal('addRoomModal');
+  toast(`Room ${num} added`,'success');
+  renderRooms();
+  saveLocal();
+}
+
+// ================================================================ HOUSEKEEPING ================================================================
+function renderHousekeeping(){
+  const tasks=STATE.housekeeping.filter(h=>h.branch===STATE.currentBranch);
+  const cols={pending:[],in_progress:[],completed:[]};
+  tasks.forEach(t=>{ if(cols[t.status]) cols[t.status].push(t); });
+
+  const colLabels={pending:'Pending',in_progress:'In Progress',completed:'Completed'};
+  const colColors={pending:'var(--gold)',in_progress:'var(--orange)',completed:'var(--green)'};
+  document.getElementById('hkBoard').innerHTML=Object.entries(cols).map(([status,items])=>`
+    <div class="hk-col">
+      <div class="hk-col-title" style="color:${colColors[status]}">${colLabels[status]} (${items.length})</div>
+      ${items.length===0?'<div style="color:var(--text3);font-size:12px;text-align:center;padding:20px 0">No tasks</div>':
+        items.map(t=>{const r=getRoom(t.roomId),s=STATE.staff.find(x=>x.id===t.staffId);return `
+          <div class="hk-task" onclick="showHKTask('${t.id}')">
+            <div class="hk-task-room"><span class="priority-dot ${t.priority}"></span>Room ${r?.number||'?'}</div>
+            <div class="hk-task-detail">${t.type}</div>
+            ${s?`<div class="hk-task-staff">👤 ${s.name}</div>`:''}
+            ${status==='pending'?`<button class="btn btn-sm btn-primary" style="margin-top:6px;width:100%" onclick="event.stopPropagation();startHKTask('${t.id}')">Start Cleaning</button>`:''}
+            ${status==='in_progress'?`<button class="btn btn-sm btn-success" style="margin-top:6px;width:100%" onclick="event.stopPropagation();completeHKTask('${t.id}')">Mark Complete ✓</button>`:''}
+          </div>`}).join('')}
+    </div>`).join('');
+}
+
+function startHKTask(id){
+  const t=STATE.housekeeping.find(h=>h.id===id);
+  if(!t) return;
+  t.status='in_progress'; t.startedAt=new Date().toISOString();
+  const room=getRoom(t.roomId); if(room) room.status='cleaning';
+  toast(`Cleaning started for Room ${getRoom(t.roomId)?.number}`,'info');
+  renderHousekeeping(); updateBadges(); saveLocal();
+}
+
+function completeHKTask(id){
+  const t=STATE.housekeeping.find(h=>h.id===id);
+  if(!t) return;
+  t.status='completed'; t.completedAt=new Date().toISOString();
+  const room=getRoom(t.roomId);
+  if(room){room.status='available'; room.lastCleaned=new Date().toISOString();}
+  toast(`Room ${room?.number} cleaned and marked available ✓`,'success');
+  renderHousekeeping(); updateBadges(); saveLocal();
+}
+
+function showHKTask(id){
+  const t=STATE.housekeeping.find(h=>h.id===id);
+  if(!t) return;
+  const r=getRoom(t.roomId), s=STATE.staff.find(x=>x.id===t.staffId);
+  showDynModal('hkTaskDetail',`Housekeeping Task — Room ${r?.number}`,`
+    <div class="form-row">
+      <div><div class="stat-label">Task Type</div><div style="font-weight:700">${t.type}</div></div>
+      <div><div class="stat-label">Priority</div><span class="badge ${t.priority}" style="margin-top:4px">${t.priority}</span></div>
+      <div><div class="stat-label">Status</div><span class="badge ${t.status}" style="margin-top:4px">${t.status.replace('_',' ')}</span></div>
+      <div><div class="stat-label">Assigned To</div><div style="font-weight:700">${s?.name||'Unassigned'}</div></div>
+    </div>
+    ${t.notes?`<div style="margin-top:10px"><div class="stat-label">Notes</div><div style="font-size:13px;color:var(--text2)">${t.notes}</div></div>`:''}
+    <div style="display:flex;gap:8px;margin-top:16px">
+      ${t.status==='pending'?`<button class="btn btn-sm btn-primary" onclick="startHKTask('${t.id}');closeModal('hkTaskDetail')">Start</button>`:''}
+      ${t.status==='in_progress'?`<button class="btn btn-sm btn-success" onclick="completeHKTask('${t.id}');closeModal('hkTaskDetail')">Complete</button>`:''}
+    </div>
+  `);
+}
+
+function createHKTask(){
+  const rId=document.getElementById('hkRoom').value;
+  const type=document.getElementById('hkType').value;
+  const staffId=document.getElementById('hkStaff').value;
+  const priority=document.getElementById('hkPriority').value;
+  const notes=document.getElementById('hkNotes').value;
+  if(!rId){toast('Please select a room','error');return;}
+  STATE.housekeeping.push({
+    id:`HK${5000+STATE.housekeeping.length}`, roomId:rId, type, priority, status:'pending',
+    staffId, notes, createdAt:new Date().toISOString(), branch:STATE.currentBranch,
+    startedAt:null, completedAt:null
+  });
+  closeModal('newHKModal');
+  toast('Housekeeping task assigned','success');
+  renderHousekeeping(); updateBadges(); saveLocal();
+}
+
+// ================================================================ MAINTENANCE ================================================================
+function renderMaintenance(){
+  const tickets=STATE.maintenance.filter(m=>m.branch===STATE.currentBranch);
+  const el=document.getElementById('maintenanceList');
+  if(tickets.length===0){ el.innerHTML='<div class="empty-state"><div class="empty-icon">🔧</div><div class="empty-text">No maintenance tickets</div></div>'; return; }
+  el.innerHTML=tickets.map(t=>{
+    const r=getRoom(t.roomId), tech=STATE.staff.find(s=>s.id===t.technicianId);
+    return `<div class="ticket-card">
+      <div class="ticket-priority ${t.priority}"></div>
+      <div class="ticket-body">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+          <div class="ticket-title">${t.title}</div>
+          <span class="badge ${t.status==='resolved'?'available':t.status==='in_progress'?'occupied':'reserved'}">${t.status.replace('_',' ')}</span>
+        </div>
+        <div class="ticket-meta">Room ${r?.number} · Priority: <span style="color:${t.priority==='high'?'var(--red)':t.priority==='medium'?'var(--orange)':'var(--green)'}">${t.priority}</span> · Tech: ${tech?.name||'Unassigned'}</div>
+        <div class="ticket-meta">${t.description}</div>
+        <div class="ticket-meta" style="margin-top:4px">Created: ${fmtDateTime(t.createdAt)} ${t.resolvedAt?'· Resolved: '+fmtDateTime(t.resolvedAt):''}</div>
+        <div class="ticket-actions">
+          ${t.status==='open'?`<button class="btn btn-sm btn-warning" onclick="updateMaintStatus('${t.id}','in_progress')">Start Work</button>`:''}
+          ${t.status==='in_progress'?`<button class="btn btn-sm btn-success" onclick="updateMaintStatus('${t.id}','resolved')">Mark Resolved</button>`:''}
+          ${t.status==='resolved'?`<span style="color:var(--green);font-size:12px">✓ Resolved</span>`:''}
+        </div>
+      </div>
+    </div>`;}).join('');
+}
+
+function updateMaintStatus(id,status){
+  const t=STATE.maintenance.find(m=>m.id===id);
+  if(!t) return;
+  t.status=status;
+  if(status==='resolved'){ t.resolvedAt=new Date().toISOString(); const r=getRoom(t.roomId); if(r&&r.status==='maintenance') r.status='available'; }
+  toast(`Maintenance ticket ${id} updated to ${status}`,'success');
+  renderMaintenance(); updateBadges(); saveLocal();
+}
+
+function createMaintenanceTicket(){
+  const rId=document.getElementById('mRoom').value;
+  const priority=document.getElementById('mPriority').value;
+  const title=document.getElementById('mTitle').value.trim();
+  const desc=document.getElementById('mDesc').value.trim();
+  const techId=document.getElementById('mTech').value;
+  if(!rId||!title){toast('Please fill in room and issue title','error');return;}
+  const ticket={id:`MT${6000+STATE.maintenance.length}`,roomId:rId,title,description:desc,priority,status:'open',technicianId:techId,createdAt:new Date().toISOString(),branch:STATE.currentBranch,resolvedAt:null};
+  STATE.maintenance.push(ticket);
+  const room=getRoom(rId); if(room) room.status='maintenance';
+  Events.emit('maintenance_created',ticket);
+  closeModal('newMaintModal');
+  renderMaintenance(); updateBadges(); saveLocal();
+}
+
+// ================================================================ BILLING ================================================================
+function renderBilling(){
+  const payments=STATE.payments.filter(p=>p.branch===STATE.currentBranch);
+  const bookings=getBranchBookings();
+
+  document.getElementById('invoicesBody').innerHTML=bookings.map(b=>{
+    const g=getGuest(b.guestId);
+    const pay=STATE.payments.find(p=>p.bookingId===b.id);
+    return `<tr>
+      <td data-label="Invoice ID" style="font-family:monospace;color:var(--accent)">INV-${b.id}</td>
+      <td data-label="Booking">${b.id}</td>
+      <td data-label="Guest" class="td-name">${g?g.firstName+' '+g.lastName:'Unknown'}</td>
+      <td data-label="Amount" style="font-weight:700;color:var(--gold)">UGX ${fmt(b.total)}</td>
+      <td data-label="Method">${pay?.method||b.paymentMethod}</td>
+      <td data-label="Status"><span class="badge ${b.paymentStatus}">${b.paymentStatus}</span></td>
+      <td data-label="Date">${fmtDate(b.checkin)}</td>
+      <td data-label="Actions">
+        <button class="btn btn-sm btn-secondary" onclick="viewInvoice('${b.id}')">View</button>
+        ${b.paymentStatus!=='paid'?`<button class="btn btn-sm btn-success" onclick="showPayment('${b.id}')">Collect</button>`:''}
+      </td>
+    </tr>`;}).join('');
+
+  document.getElementById('paymentsBody').innerHTML=payments.map(p=>{
+    return `<tr>
+      <td data-label="Payment ID" style="font-family:monospace;color:var(--green)">${p.id}</td>
+      <td data-label="Booking">${p.bookingId}</td>
+      <td data-label="Amount" style="font-weight:700;color:var(--gold)">UGX ${fmt(p.amount)}</td>
+      <td data-label="Method">${p.method}</td>
+      <td data-label="Status"><span class="badge ${p.status==='completed'?'paid':'pending'}">${p.status}</span></td>
+      <td data-label="Timestamp">${fmtDateTime(p.timestamp)}</td>
+    </tr>`;}).join('');
+}
+
+function viewInvoice(bkId){
+  const bk=STATE.bookings.find(b=>b.id===bkId);
+  if(!bk) return;
+  const g=getGuest(bk.guestId), r=getRoom(bk.roomId);
+  const branch=getBranch(bk.branch);
+  const tax=Math.round(bk.total*STATE.settings.taxRate);
+  const subtotal=bk.total-tax;
+  document.getElementById('invoiceContent').innerHTML=`
+    <div class="invoice-wrap">
+      <div class="invoice-header">
+        <div>
+          <div class="invoice-logo">🏨 ${branch?.name}</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px">${branch?.city} · Tel: ${branch?.phone}</div>
+          <div style="font-size:12px;color:var(--text3)">Email: kabuusumonalisa@gmail.com</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:20px;font-weight:700;color:var(--gold)">INVOICE</div>
+          <div style="font-size:13px;color:var(--text3);margin-top:4px">INV-${bk.id}</div>
+          <div style="font-size:12px;color:var(--text3)">${fmtDateTime(bk.createdAt)}</div>
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:20px">
+        <div style="background:var(--surface3);padding:14px;border-radius:var(--radius)">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-bottom:6px">Bill To</div>
+          <div style="font-weight:700">${g?g.firstName+' '+g.lastName:'Unknown'}</div>
+          <div style="font-size:12px;color:var(--text2)">${g?.email}</div>
+          <div style="font-size:12px;color:var(--text2)">${g?.phone}</div>
+          <div style="font-size:12px;color:var(--text2)">${g?.nationality}</div>
+        </div>
+        <div style="background:var(--surface3);padding:14px;border-radius:var(--radius)">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-bottom:6px">Booking Details</div>
+          <div style="font-size:13px"><span style="color:var(--text3)">Booking ID:</span> <strong>${bk.id}</strong></div>
+          <div style="font-size:13px"><span style="color:var(--text3)">Room:</span> <strong>${r?.number} (${r?.type})</strong></div>
+          <div style="font-size:13px"><span style="color:var(--text3)">Check-in:</span> <strong>${fmtDate(bk.checkin)}</strong></div>
+          <div style="font-size:13px"><span style="color:var(--text3)">Check-out:</span> <strong>${fmtDate(bk.checkout)}</strong></div>
+          <div style="font-size:13px"><span style="color:var(--text3)">Nights:</span> <strong>${bk.nights}</strong></div>
+        </div>
+      </div>
+      <table class="invoice-table">
+        <thead><tr style="border-bottom:2px solid var(--border2)">
+          <th style="padding:8px;text-align:left;color:var(--text3);font-size:12px">Description</th>
+          <th style="padding:8px;text-align:right;color:var(--text3);font-size:12px">Qty</th>
+          <th style="padding:8px;text-align:right;color:var(--text3);font-size:12px">Rate</th>
+          <th style="padding:8px;text-align:right;color:var(--text3);font-size:12px">Amount</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:10px 8px">${r?.type} Room — ${r?.number}</td><td style="padding:10px 8px;text-align:right">${bk.nights} nights</td><td style="padding:10px 8px;text-align:right">UGX ${fmt(r?.price)}</td><td style="padding:10px 8px;text-align:right;font-weight:700">UGX ${fmt(subtotal)}</td></tr>
+          <tr style="border-top:1px solid var(--border)"><td colspan="3" style="padding:8px;text-align:right;color:var(--text3)">Tax (18% VAT)</td><td style="padding:8px;text-align:right">UGX ${fmt(tax)}</td></tr>
+        </tbody>
+      </table>
+      <div style="border-top:2px solid var(--border2);padding-top:12px;text-align:right">
+        <div style="font-size:14px;color:var(--text3)">Total Amount</div>
+        <div class="invoice-total">UGX ${fmt(bk.total)}</div>
+        <div style="margin-top:8px"><span class="badge ${bk.paymentStatus}" style="font-size:13px;padding:5px 14px">${bk.paymentStatus.toUpperCase()}</span></div>
+      </div>
+      ${bk.requests?`<div style="margin-top:16px;padding:10px;background:var(--surface3);border-radius:var(--radius);font-size:12px;color:var(--text2)"><strong>Special Requests:</strong> ${bk.requests}</div>`:''}
+      <div style="margin-top:20px;text-align:center;font-size:11px;color:var(--text3);border-top:1px solid var(--border);padding-top:12px">
+        Thank you for choosing ${branch?.name}. Powered by Monalisa Tech Solutions · kabuusumonalisa@gmail.com · +256703953711
+      </div>
+    </div>`;
+  showModal('invoiceModal');
+}
+
+// ================================================================ GUESTS ================================================================
+function renderGuests(){
+  const guests=STATE.guests.filter(g=>g.branch===STATE.currentBranch);
+  const tbody=document.getElementById('guestsTableBody');
+  tbody.innerHTML=guests.map(g=>`<tr>
+    <td data-label="Guest">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0">${g.firstName.charAt(0)}</div>
+        <div><div class="td-name">${g.firstName} ${g.lastName}</div><div style="font-size:11px;color:var(--text3)">${g.nationality}</div></div>
+      </div>
+    </td>
+    <td data-label="Email">${g.email}</td>
+    <td data-label="Phone">${g.phone}</td>
+    <td data-label="VIP">${g.vip>0?`<span class="badge vip">⭐ ${['','Silver','Gold','Platinum'][g.vip]}</span>`:'-'}</td>
+    <td data-label="Loyalty Pts"><div class="loyalty-bar"><span class="loyalty-stars">${'★'.repeat(Math.min(5,Math.floor(g.loyaltyPoints/1000)))}</span><span style="font-size:12px;color:var(--text2)">${fmt(g.loyaltyPoints)} pts</span></div></td>
+    <td data-label="Stays">${STATE.bookings.filter(b=>b.guestId===g.id).length}</td>
+    <td data-label="Last Stay">${(()=>{const last=STATE.bookings.filter(b=>b.guestId===g.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))[0];return last?fmtDate(last.checkin):'-';})()}</td>
+    <td data-label="Actions">
+      <button class="btn btn-sm btn-secondary" onclick="showGuestProfile('${g.id}')">View</button>
+      <button class="btn btn-sm btn-primary" onclick="bookForGuestId('${g.id}')">Book</button>
+    </td>
+  </tr>`).join('');
+}
+
+function filterGuests(){
+  const q=document.getElementById('guestSearch').value.toLowerCase();
+  document.querySelectorAll('#guestsTableBody tr').forEach(row=>{
+    row.style.display=!q||row.textContent.toLowerCase().includes(q)?'':'none';
+  });
+}
+
+function createGuest(){
+  const fn=document.getElementById('gFirstName').value.trim();
+  const ln=document.getElementById('gLastName').value.trim();
+  const email=document.getElementById('gEmail').value.trim();
+  const phone=document.getElementById('gPhone').value.trim();
+  const nat=document.getElementById('gNationality').value.trim();
+  const idNum=document.getElementById('gIdNum').value.trim();
+  const vip=parseInt(document.getElementById('gVip').value);
+  const prefs=document.getElementById('gPrefs').value.trim();
+  if(!fn||!ln||!email){toast('Please fill in name and email','error');return;}
+  if(STATE.guests.find(g=>g.email.toLowerCase()===email.toLowerCase())){toast('Guest with this email already exists','error');return;}
+  const g={id:`G${1000+STATE.guests.length}`,firstName:fn,lastName:ln,email,phone,nationality:nat||'Unknown',idNumber:idNum,vip,loyaltyPoints:0,preferences:prefs,history:[],branch:STATE.currentBranch,createdAt:new Date().toISOString()};
+  STATE.guests.push(g);
+  Events.emit('guest_created',g);
+  closeModal('newGuestModal');
+  toast(`Guest ${fn} ${ln} added`,'success');
+  renderGuests();
+  saveLocal();
+}
+
+function showGuestProfile(gId){
+  const g=STATE.guests.find(x=>x.id===gId);
+  if(!g) return;
+  STATE._viewingGuest=gId;
+  document.getElementById('gpTitle').textContent=`${g.firstName} ${g.lastName}${g.vip?' — VIP '+['','Silver','Gold','Platinum'][g.vip]:''}`;
+  const bks=STATE.bookings.filter(b=>b.guestId===gId).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  const totalSpent=STATE.payments.filter(p=>bks.some(b=>b.id===p.bookingId)).reduce((s,p)=>s+p.amount,0);
+  document.getElementById('guestProfileContent').innerHTML=`
+    <div class="grid-2" style="margin-bottom:16px">
+      <div style="background:var(--surface2);padding:16px;border-radius:var(--radius)">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+          <div style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700">${g.firstName.charAt(0)}</div>
+          <div>
+            <div style="font-size:17px;font-weight:700">${g.firstName} ${g.lastName}</div>
+            <div style="font-size:12px;color:var(--text3)">${g.nationality} · ID: ${g.idNumber}</div>
+            ${g.vip?`<span class="badge vip" style="margin-top:4px">⭐ VIP ${['','Silver','Gold','Platinum'][g.vip]}</span>`:''}
+          </div>
+        </div>
+        <div style="font-size:13px;color:var(--text2)">📧 ${g.email}</div>
+        <div style="font-size:13px;color:var(--text2);margin-top:4px">📱 ${g.phone}</div>
+        ${g.preferences?`<div style="margin-top:8px;font-size:12px;color:var(--accent)">💡 ${g.preferences}</div>`:''}
+      </div>
+      <div style="background:var(--surface2);padding:16px;border-radius:var(--radius)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div><div class="stat-label">Total Stays</div><div style="font-size:22px;font-weight:700">${bks.length}</div></div>
+          <div><div class="stat-label">Total Spent</div><div style="font-size:18px;font-weight:700;color:var(--gold)">UGX ${fmtShort(totalSpent)}</div></div>
+          <div><div class="stat-label">Loyalty Points</div><div style="font-size:18px;font-weight:700;color:var(--accent)">${fmt(g.loyaltyPoints)} pts</div></div>
+          <div><div class="stat-label">Member Since</div><div style="font-size:13px;font-weight:700">${new Date(g.createdAt).getFullYear()}</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-title">Stay History</div>
+    <div class="timeline">
+      ${bks.length===0?'<div style="color:var(--text3);font-size:13px">No stay history yet</div>':
+        bks.slice(0,8).map(b=>{const r=getRoom(b.roomId);return `
+          <div class="tl-item">
+            <div class="tl-dot" style="background:${b.status==='checked_out'?'var(--text3)':b.status==='checked_in'?'var(--green)':'var(--accent)'}"></div>
+            <div class="tl-content">
+              <div class="tl-title">Room ${r?.number} (${r?.type}) · UGX ${fmt(b.total)}</div>
+              <div class="tl-date">${fmtDate(b.checkin)} → ${fmtDate(b.checkout)} · ${b.nights} nights · <span class="badge ${b.status.replace('_','-')}">${b.status.replace('_',' ')}</span></div>
+            </div>
+          </div>`}).join('')}
+    </div>`;
+  showModal('guestProfileModal');
+}
+
+function bookForGuestId(gId){
+  STATE._preselectedGuest=gId;
+  openNewBooking();
+}
+function bookForGuest(){
+  if(STATE._viewingGuest){bookForGuestId(STATE._viewingGuest);closeModal('guestProfileModal');}
+}
+
+// ================================================================ STAFF ================================================================
+function renderStaff(){
+  const staff=STATE.staff.filter(s=>s.branch===STATE.currentBranch);
+  document.getElementById('staffTableBody').innerHTML=staff.map(s=>`<tr>
+    <td data-label="Staff"><div style="display:flex;align-items:center;gap:10px">
+      <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0">${s.name.charAt(0)}</div>
+      <div><div class="td-name">${s.name}</div><div style="font-size:11px;color:var(--text3)">${s.email}</div></div>
+    </div></td>
+    <td data-label="Role"><span class="badge ${s.role}">${s.role}</span></td>
+    <td data-label="Department">${s.dept}</td>
+    <td data-label="Branch">${getBranch(s.branch)?.name||s.branch}</td>
+    <td data-label="Status"><span class="badge ${s.status==='active'?'available':'maintenance'}">${s.status}</span></td>
+    <td data-label="Shift" style="font-size:12px">${s.shift}</td>
+    <td data-label="Actions">
+      <button class="btn btn-sm btn-secondary" onclick="toggleStaffStatus('${s.id}')">
+        ${s.status==='active'?'Set Off Duty':'Set Active'}
+      </button>
+    </td>
+  </tr>`).join('');
+}
+
+function createStaff(){
+  const name=document.getElementById('sName').value.trim();
+  const role=document.getElementById('sRole').value;
+  const email=document.getElementById('sEmail').value.trim();
+  const phone=document.getElementById('sPhone').value.trim();
+  const shift=document.getElementById('sShift').value;
+  const branch=document.getElementById('sBranch').value;
+  if(!name||!email){toast('Please fill in name and email','error');return;}
+  STATE.staff.push({id:`S${4000+STATE.staff.length}`,name,role,email,phone,dept:({admin:'IT',manager:'Management',receptionist:'Front Desk',housekeeping:'Housekeeping',maintenance:'Engineering'})[role]||'General',shift,status:'active',branch,createdAt:new Date().toISOString()});
+  closeModal('newStaffModal');
+  toast(`${name} added to staff`,'success');
+  renderStaff(); saveLocal();
+}
+
+function toggleStaffStatus(sId){
+  const s=STATE.staff.find(x=>x.id===sId);
+  if(!s) return;
+  s.status=s.status==='active'?'off-duty':'active';
+  toast(`${s.name} marked ${s.status}`,'info');
+  renderStaff(); saveLocal();
+}
+
+// ================================================================ REVENUE ================================================================
+function renderRevenue(){
+  const payments=STATE.payments.filter(p=>p.branch===STATE.currentBranch);
+  const rooms=getBranchRooms();
+  const occupied=rooms.filter(r=>r.status==='occupied').length;
+  const totalRev=payments.reduce((s,p)=>s+p.amount,0);
+  const occupancyRate=rooms.length>0?Math.round((occupied/rooms.length)*100):0;
+  const adr=occupied>0?Math.round(totalRev/Math.max(occupied*30,1)):0;
+  const revpar=rooms.length>0?Math.round(totalRev/(rooms.length*30)):0;
+
+  document.getElementById('revenueStats').innerHTML=`
+    <div class="stat-card green"><div class="stat-label">Total Revenue</div><div class="stat-value" style="font-size:20px">UGX ${fmtShort(totalRev)}</div><div class="stat-sub">All time</div></div>
+    <div class="stat-card blue"><div class="stat-label">Occupancy Rate</div><div class="stat-value">${occupancyRate}%</div><div class="occ-meter"><div class="occ-fill" style="width:${occupancyRate}%"></div></div></div>
+    <div class="stat-card gold"><div class="stat-label">ADR</div><div class="stat-value" style="font-size:20px">UGX ${fmtShort(adr)}</div><div class="stat-sub">Average Daily Rate</div></div>
+    <div class="stat-card blue"><div class="stat-label">RevPAR</div><div class="stat-value" style="font-size:20px">UGX ${fmtShort(revpar)}</div><div class="stat-sub">Rev per Available Room</div></div>
+    <div class="stat-card green"><div class="stat-label">Total Payments</div><div class="stat-value">${payments.length}</div><div class="stat-sub">Transactions</div></div>
+    <div class="stat-card gold"><div class="stat-label">Avg Booking Value</div><div class="stat-value" style="font-size:20px">UGX ${fmtShort(payments.length>0?Math.round(totalRev/payments.length):0)}</div></div>
+  `;
+
+  // Monthly chart
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const mRevs=months.map((_,i)=>{
+    const base=[3.2,2.8,4.1,3.9,5.2,6.1,7.3,8.0,6.5,5.8,4.9,7.2][i]*1e6;
+    return Math.round(base+Math.random()*5e5);
+  });
+  const maxM=Math.max(...mRevs);
+  document.getElementById('monthlyRevenueChart').innerHTML=`<div class="chart-bars">${mRevs.map((v,i)=>`
+    <div class="chart-bar-wrap">
+      <div class="chart-bar" data-val="UGX ${fmtShort(v)}" style="height:${Math.round((v/maxM)*120)}px;background:linear-gradient(180deg,var(--accent),var(--accent2))"></div>
+      <div class="chart-label">${months[i]}</div>
+    </div>`).join('')}</div>`;
+
+  // By room type
+  const types=['Standard','Deluxe','Suite','Executive','Presidential'];
+  const typeRevs=types.map((_,i)=>Math.round(([15,22,35,28,18][i])*1e5+Math.random()*5e5));
+  const maxT=Math.max(...typeRevs);
+  document.getElementById('roomTypeRevChart').innerHTML=types.map((t,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <span style="font-size:13px;color:var(--text2);width:90px">${t}</span>
+      <div style="flex:1"><div class="progress"><div class="progress-bar blue" style="width:${Math.round((typeRevs[i]/maxT)*100)}%"></div></div></div>
+      <span style="font-size:12px;font-weight:700;color:var(--gold);width:70px;text-align:right">UGX ${fmtShort(typeRevs[i])}</span>
+    </div>`).join('');
+
+  // Branch comparison
+  document.getElementById('branchComparison').innerHTML=`
+    <div class="grid-3">
+      ${STATE.branches.map(b=>{const rev=Math.round(Math.random()*5e7+1e7);return `
+        <div style="background:var(--surface2);padding:16px;border-radius:var(--radius2);text-align:center">
+          <div style="font-size:14px;font-weight:700;margin-bottom:4px">${b.name}</div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:12px">${b.city}</div>
+          <div style="font-size:22px;font-weight:700;color:var(--gold)">UGX ${fmtShort(rev)}</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px">Occupancy: ${Math.floor(Math.random()*40+50)}%</div>
+          <div class="occ-meter" style="margin-top:8px"><div class="occ-fill" style="width:${Math.floor(Math.random()*40+50)}%"></div></div>
+        </div>`}).join('')}
+    </div>`;
+}
+
+// ================================================================ BRANCHES ================================================================
+function renderBranches(){
+  document.getElementById('branchesGrid').innerHTML=STATE.branches.map(b=>`
+    <div class="branch-card ${b.id===STATE.currentBranch?'active':''}" onclick="switchBranch('${b.id}')">
+      <div class="branch-icon">🏨</div>
+      <div class="branch-name">${b.name}</div>
+      <div class="branch-meta">${b.city} · ${'⭐'.repeat(b.stars)}</div>
+      <div class="branch-meta" style="margin-top:4px">${b.rooms} rooms · ${b.manager}</div>
+      ${b.id===STATE.currentBranch?'<div style="margin-top:10px"><span class="badge available">Active Branch</span></div>':'<div style="margin-top:10px"><button class="btn btn-sm btn-secondary">Switch</button></div>'}
+    </div>`).join('');
+
+  document.getElementById('crossBranchAnalytics').innerHTML=`
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr>
+        <th style="padding:10px;text-align:left;border-bottom:1px solid var(--border);color:var(--text3)">Branch</th>
+        <th style="padding:10px;text-align:right;border-bottom:1px solid var(--border);color:var(--text3)">Rooms</th>
+        <th style="padding:10px;text-align:right;border-bottom:1px solid var(--border);color:var(--text3)">Occupancy</th>
+        <th style="padding:10px;text-align:right;border-bottom:1px solid var(--border);color:var(--text3)">Revenue</th>
+        <th style="padding:10px;text-align:right;border-bottom:1px solid var(--border);color:var(--text3)">Status</th>
+      </tr></thead>
+      <tbody>
+        ${STATE.branches.map(b=>{const occ=Math.floor(Math.random()*40+50);const rev=Math.round(Math.random()*5e7+1e7);return `
+          <tr>
+            <td style="padding:10px;font-weight:600">${b.name}</td>
+            <td style="padding:10px;text-align:right">${b.rooms}</td>
+            <td style="padding:10px;text-align:right">
+              <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end">
+                <div style="width:60px"><div class="progress"><div class="progress-bar green" style="width:${occ}%"></div></div></div>
+                <span style="font-weight:700">${occ}%</span>
+              </div>
+            </td>
+            <td style="padding:10px;text-align:right;font-weight:700;color:var(--gold)">UGX ${fmtShort(rev)}</td>
+            <td style="padding:10px;text-align:right"><span class="badge available">Operational</span></td>
+          </tr>`}).join('')}
+      </tbody>
+    </table>`;
+}
+
+function switchBranch(bId){
+  STATE.currentBranch=bId;
+  document.getElementById('branchChip').textContent=getBranch(bId)?.name||'';
+  document.getElementById('dashBranchSub').textContent=`${getBranch(bId)?.name} — Live Overview`;
+  toast(`Switched to ${getBranch(bId)?.name}`,'info');
+  renderPage(getCurrentPage());
+}
+
+function addBranch(){
+  const name=document.getElementById('bnName').value.trim();
+  const city=document.getElementById('bnCity').value.trim();
+  const rooms=parseInt(document.getElementById('bnRooms').value);
+  const mgr=document.getElementById('bnManager').value.trim();
+  if(!name||!city){toast('Please fill in branch name and city','error');return;}
+  const id=name.toLowerCase().replace(/\s+/g,'_').slice(0,10);
+  STATE.branches.push({id,name,city,rooms,manager:mgr||'TBD',stars:3,phone:'TBD',revenue:0});
+  closeModal('newBranchModal');
+  toast(`Branch "${name}" added`,'success');
+  renderBranches(); saveLocal();
+}
+
+// ================================================================ AUDIT ================================================================
+function renderAudit(){
+  const log=STATE.auditLog.slice().reverse().slice(0,100);
+  const el=document.getElementById('auditLogContainer');
+  if(log.length===0){el.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">No audit entries yet</div></div>';return;}
+  el.innerHTML=log.map(e=>`
+    <div class="audit-entry">
+      <div class="audit-icon">${{guest_created:'👤',room_booked:'📅',checkin_completed:'✅',checkout_completed:'🚪',payment_received:'💳',maintenance_created:'🔧',cancel_booking:'❌',init:'🚀'}[e.action]||'📝'}</div>
+      <div class="audit-body">
+        <div class="audit-action">${e.action.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())} — ${e.module}</div>
+        <div class="audit-meta">By: ${e.user} · ${fmtDateTime(e.timestamp)} · Ref: ${e.refId||'-'}</div>
+        ${e.before||e.after?`<div class="audit-change">${e.before?`<span class="audit-before">${e.before}</span> →`:''} ${e.after?`<span class="audit-after">${e.after}</span>`:''}</div>`:''}
+        ${e.detail?`<div style="font-size:11px;color:var(--text2);margin-top:2px">${e.detail}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function addAudit(user,action,module,detail,before,after,refId){
+  STATE.auditLog.push({user,action,module,detail,before,after,refId,timestamp:new Date().toISOString()});
+}
+
+// ================================================================ SETTINGS ================================================================
+function renderSettings(){
+  document.getElementById('pricingRules').innerHTML=STATE.pricingRules.map(r=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">${r.type}</div>
+        <div style="font-size:12px;color:var(--text3)">Multiplier: ${r.multiplier}x (${Math.round((r.multiplier-1)*100)}%)</div>
+      </div>
+      <label class="toggle"><input type="checkbox" ${r.active?'checked':''} onchange="togglePricingRule('${r.id}')"><span class="toggle-slider"></span></label>
+    </div>`).join('');
+
+  document.getElementById('systemPrefs').innerHTML=`
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div><label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:5px">Auto Checkout Time</label>
+        <input type="time" value="${STATE.settings.autoCheckoutTime}" onchange="STATE.settings.autoCheckoutTime=this.value;toast('Setting saved','success')" style="padding:9px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;width:100%"></div>
+      <div><label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:5px">Tax Rate (%)</label>
+        <input type="number" value="${STATE.settings.taxRate*100}" onchange="STATE.settings.taxRate=this.value/100;toast('Tax rate updated','success')" style="padding:9px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;width:100%"></div>
+      <div><label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:5px">Breakfast Surcharge (UGX)</label>
+        <input type="number" value="${STATE.settings.breakfastPrice}" onchange="STATE.settings.breakfastPrice=parseInt(this.value);toast('Saved','success')" style="padding:9px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;width:100%"></div>
+      <button class="btn btn-danger btn-sm" onclick="clearData()">⚠️ Reset System Data</button>
+    </div>`;
+}
+
+function togglePricingRule(id){
+  const r=STATE.pricingRules.find(x=>x.id===id);
+  if(r){ r.active=!r.active; toast(`"${r.type}" ${r.active?'enabled':'disabled'}`,'info'); saveLocal(); }
+}
+
+// ================================================================ PROFILE ================================================================
+function renderProfile(){
+  const u=STATE.currentUser;
+  document.getElementById('profileCard').innerHTML=`
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;margin:0 auto 12px">${u?.name?.charAt(0)}</div>
+      <div style="font-size:18px;font-weight:700">${u?.name}</div>
+      <div style="margin-top:6px"><span class="badge ${u?.role}">${u?.role}</span></div>
+      <div style="font-size:12px;color:var(--text3);margin-top:8px">Branch: ${getBranch(STATE.currentBranch)?.name}</div>
+    </div>
+    <div style="padding:14px;background:var(--surface2);border-radius:var(--radius)">
+      <div style="font-size:13px;margin-bottom:6px"><span style="color:var(--text3)">Username:</span> <strong>${u?.username}</strong></div>
+      <div style="font-size:13px;margin-bottom:6px"><span style="color:var(--text3)">Role:</span> <strong>${u?.role}</strong></div>
+      <div style="font-size:13px"><span style="color:var(--text3)">Permissions:</span> <strong>${(PERMISSIONS[u?.role]||[]).join(', ')}</strong></div>
+    </div>`;
+
+  const myLogs=STATE.auditLog.filter(l=>l.user===u?.name).slice().reverse().slice(0,10);
+  document.getElementById('myActivity').innerHTML=myLogs.length===0?
+    '<div style="color:var(--text3);font-size:13px">No recent activity</div>':
+    myLogs.map(l=>`<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;flex:1;font-weight:600">${l.action.replace(/_/g,' ')}</div>
+      <div style="font-size:11px;color:var(--text3)">${fmtDateTime(l.timestamp)}</div>
+    </div>`).join('');
+}
+
+// ================================================================ NOTIFICATIONS ================================================================
+function pushNotif(icon,category,msg,type){
+  STATE.notifications.unshift({id:`N${Date.now()}`,icon,category,msg,type,time:new Date().toISOString(),read:false});
+  updateBadges();
+  renderNotifList();
+}
+
+function renderNotifList(){
+  const el=document.getElementById('notifList');
+  const colors={info:'rgba(79,142,247,0.1)',success:'rgba(45,212,160,0.1)',warning:'rgba(245,147,92,0.1)',vip:'rgba(232,184,75,0.1)',error:'rgba(240,92,110,0.1)'};
+  el.innerHTML=STATE.notifications.slice(0,30).map(n=>`
+    <div class="notif-item ${n.read?'':'unread'}">
+      <div class="notif-icon" style="background:${colors[n.type]||colors.info}">${n.icon}</div>
+      <div class="notif-text">
+        <div class="notif-msg"><strong>${n.category}:</strong> ${n.msg}</div>
+        <div class="notif-time">${fmtDateTime(n.time)}</div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleNotifPanel(){
+  const p=document.getElementById('notifPanel');
+  p.classList.toggle('open');
+  if(p.classList.contains('open')) renderNotifList();
+}
+
+function markAllRead(){
+  STATE.notifications.forEach(n=>n.read=true);
+  updateBadges();
+  renderNotifList();
+}
+
+function updateBadges(){
+  const unread=STATE.notifications.filter(n=>!n.read).length;
+  document.getElementById('notifCount').textContent=unread>0?unread:'0';
+
+  const pending=STATE.bookings.filter(b=>b.status==='pending'&&b.branch===STATE.currentBranch).length;
+  document.getElementById('pendingBookingsBadge').textContent=pending>0?pending:'';
+  document.getElementById('pendingBookingsBadge').style.display=pending>0?'':'none';
+
+  const hkPending=STATE.housekeeping.filter(h=>h.status!=='completed'&&h.branch===STATE.currentBranch).length;
+  document.getElementById('hkBadge').textContent=hkPending>0?hkPending:'';
+  document.getElementById('hkBadge').style.display=hkPending>0?'':'none';
+
+  const maintOpen=STATE.maintenance.filter(m=>m.status!=='resolved'&&m.branch===STATE.currentBranch).length;
+  document.getElementById('maintBadge').textContent=maintOpen>0?maintOpen:'';
+  document.getElementById('maintBadge').style.display=maintOpen>0?'':'none';
+}
+
+// ================================================================ GLOBAL SEARCH ================================================================
+function openSearch(){
+  document.getElementById('searchOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('searchInput').focus(),50);
+}
+function closeSearch(e){
+  if(!e||e.target===document.getElementById('searchOverlay')){
+    document.getElementById('searchOverlay').classList.remove('open');
+    document.getElementById('searchInput').value='';
+    document.getElementById('searchResults').innerHTML='';
+  }
+}
+
+function doSearch(q){
+  const el=document.getElementById('searchResults');
+  if(!q.trim()){el.innerHTML='';return;}
+  q=q.toLowerCase();
+  const results=[];
+
+  STATE.guests.filter(g=>`${g.firstName} ${g.lastName} ${g.email}`.toLowerCase().includes(q)).slice(0,4).forEach(g=>{
+    results.push({type:'Guest',icon:'👤',name:`${g.firstName} ${g.lastName}`,sub:`${g.email} · ${g.nationality}`,action:()=>{closeSearch();showGuestProfile(g.id);}});
+  });
+  STATE.rooms.filter(r=>`${r.number} ${r.type}`.toLowerCase().includes(q)).slice(0,4).forEach(r=>{
+    results.push({type:'Room',icon:'🛏️',name:`Room ${r.number}`,sub:`${r.type} · ${r.status} · UGX ${fmt(r.price)}/night`,action:()=>{closeSearch();showPage('rooms');}});
+  });
+  STATE.bookings.filter(b=>b.id.toLowerCase().includes(q)||getGuest(b.guestId)?.firstName?.toLowerCase().includes(q)).slice(0,4).forEach(b=>{
+    const g=getGuest(b.guestId);
+    results.push({type:'Booking',icon:'📅',name:b.id,sub:`${g?g.firstName+' '+g.lastName:'Unknown'} · ${fmtDate(b.checkin)} to ${fmtDate(b.checkout)}`,action:()=>{closeSearch();showPage('bookings');}});
+  });
+  STATE.staff.filter(s=>s.name.toLowerCase().includes(q)||s.role.includes(q)).slice(0,3).forEach(s=>{
+    results.push({type:'Staff',icon:'👔',name:s.name,sub:`${s.role} · ${s.dept}`,action:()=>{closeSearch();showPage('staff');}});
+  });
+
+  if(results.length===0){el.innerHTML='<div style="padding:24px;text-align:center;color:var(--text3)">No results found</div>';return;}
+
+  let html=''; let lastType='';
+  results.forEach(r=>{
+    if(r.type!==lastType){html+=`<div class="search-category">${r.type}s</div>`;lastType=r.type;}
+    html+=`<div class="search-result-item" onclick="(${r.action.toString()})()">
+      <div class="search-result-icon">${r.icon}</div>
+      <div><div class="search-result-name">${r.name}</div><div class="search-result-sub">${r.sub}</div></div>
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+
+// ================================================================ MODALS ================================================================
+function showModal(id){
+  populateModalSelects(id);
+  document.getElementById(id)?.classList.add('open');
+}
+function closeModal(id){ document.getElementById(id)?.classList.remove('open'); }
+
+function showDynModal(id,title,html){
+  let el=document.getElementById(id);
+  if(!el){
+    el=document.createElement('div');
+    el.className='modal-overlay';
+    el.id=id;
+    el.innerHTML=`<div class="modal modal-lg"><div class="modal-header"><div class="modal-title" id="${id}_title"></div><button class="modal-close" onclick="closeModal('${id}')">✕</button></div><div id="${id}_body"></div></div>`;
+    document.body.appendChild(el);
+  }
+  document.getElementById(`${id}_title`).textContent=title;
+  document.getElementById(`${id}_body`).innerHTML=html;
+  el.classList.add('open');
+}
+
+function populateModalSelects(id){
+  if(id==='newBookingModal'){
+    const gs=document.getElementById('bkGuest');
+    const rs=document.getElementById('bkRoom');
+    if(!gs||!rs) return;
+    const gPre=STATE._preselectedGuest||'';
+    gs.innerHTML=STATE.guests.filter(g=>g.branch===STATE.currentBranch).map(g=>`<option value="${g.id}" ${g.id===gPre?'selected':''}>${g.firstName} ${g.lastName}${g.vip?' ⭐':''}</option>`).join('');
+    rs.innerHTML=STATE.rooms.filter(r=>r.branch===STATE.currentBranch&&r.status==='available').map(r=>`<option value="${r.id}">Room ${r.number} — ${r.type} — UGX ${fmt(r.price)}/night</option>`).join('');
+    STATE._preselectedGuest=null;
+    const today=new Date().toISOString().split('T')[0];
+    const tomorrow=new Date(Date.now()+864e5).toISOString().split('T')[0];
+    document.getElementById('bkCheckin').value=today;
+    document.getElementById('bkCheckout').value=tomorrow;
+    ['bkCheckin','bkCheckout','bkRoom'].forEach(id=>document.getElementById(id)?.addEventListener('change',updateBkSummary));
+    updateBkSummary();
+  }
+  if(id==='newMaintModal'){
+    document.getElementById('mRoom').innerHTML=STATE.rooms.filter(r=>r.branch===STATE.currentBranch).map(r=>`<option value="${r.id}">Room ${r.number} (${r.type})</option>`).join('');
+    document.getElementById('mTech').innerHTML=STATE.staff.filter(s=>s.role==='maintenance'&&s.branch===STATE.currentBranch).map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+  }
+  if(id==='newHKModal'){
+    document.getElementById('hkRoom').innerHTML=STATE.rooms.filter(r=>r.branch===STATE.currentBranch).map(r=>`<option value="${r.id}">Room ${r.number} (${r.status})</option>`).join('');
+    document.getElementById('hkStaff').innerHTML=STATE.staff.filter(s=>s.role==='housekeeping'&&s.branch===STATE.currentBranch).map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+  }
+}
+
+function updateBkSummary(){
+  const rId=document.getElementById('bkRoom')?.value;
+  const ci=document.getElementById('bkCheckin')?.value;
+  const co=document.getElementById('bkCheckout')?.value;
+  const el=document.getElementById('bkSummary');
+  if(!el) return;
+  if(!rId||!ci||!co||new Date(co)<=new Date(ci)){el.textContent='Select room and dates to see price summary.';return;}
+  const r=getRoom(rId);
+  const nights=Math.ceil((new Date(co)-new Date(ci))/864e5);
+  const subtotal=r?.price*nights;
+  const tax=Math.round(subtotal*STATE.settings.taxRate);
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>Room ${r?.number} (${r?.type}) × ${nights} nights</span><span>UGX ${fmt(subtotal)}</span></div><div style="display:flex;justify-content:space-between;margin-bottom:6px;color:var(--text3)"><span>Tax (${STATE.settings.taxRate*100}%)</span><span>UGX ${fmt(tax)}</span></div><div style="display:flex;justify-content:space-between;font-weight:700;color:var(--gold);border-top:1px solid var(--border);padding-top:6px"><span>Total</span><span>UGX ${fmt(subtotal+tax)}</span></div>`;
+}
+
+function openNewBooking(){
+  showModal('newBookingModal');
+}
+
+// ================================================================ TABS ================================================================
+function switchTab(tabEl,contentId){
+  const parent=tabEl.closest('.tabs').parentElement;
+  parent.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  parent.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  tabEl.classList.add('active');
+  document.getElementById(contentId)?.classList.add('active');
+}
+
+// ================================================================ TOASTS ================================================================
+function toast(msg,type='info'){
+  const icons={success:'✅',error:'❌',warning:'⚠️',info:'ℹ️'};
+  const el=document.createElement('div');
+  el.className=`toast ${type}`;
+  el.innerHTML=`<span>${icons[type]}</span><span>${msg}</span>`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(()=>el.remove(),4000);
+}
+
+// ================================================================ HELPERS ================================================================
+function fmt(n){ return n?Number(n).toLocaleString():'0'; }
+function fmtShort(n){ if(n>=1e9) return (n/1e9).toFixed(1)+'B'; if(n>=1e6) return (n/1e6).toFixed(1)+'M'; if(n>=1e3) return (n/1e3).toFixed(0)+'K'; return String(n||0); }
+function fmtDate(d){ if(!d) return '—'; const dt=new Date(d); return dt.toLocaleDateString('en-GB'); }
+function fmtDateTime(d){ if(!d) return '—'; const dt=new Date(d); return dt.toLocaleDateString('en-GB')+' '+dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
+function getBranch(id){ return STATE.branches.find(b=>b.id===id); }
+function getRoom(id){ return STATE.rooms.find(r=>r.id===id); }
+function getGuest(id){ return STATE.guests.find(g=>g.id===id); }
+function getBranchRooms(){ return STATE.rooms.filter(r=>r.branch===STATE.currentBranch); }
+function getBranchBookings(){ return STATE.bookings.filter(b=>b.branch===STATE.currentBranch); }
+function getCurrentPage(){ return document.querySelector('.nav-item.active')?.dataset?.page||'dashboard'; }
+function simulatePrint(){ /* superseded below */ }
+function clearData(){ if(confirm('Reset all data? This cannot be undone!')) { localStorage.removeItem('hms_data'); seedData(); toast('Data reset','warning'); renderPage(getCurrentPage()); } }
+function saveLocal(){
+  try { localStorage.setItem('hms_data',JSON.stringify({guests:STATE.guests,rooms:STATE.rooms,bookings:STATE.bookings,payments:STATE.payments,staff:STATE.staff,housekeeping:STATE.housekeeping,maintenance:STATE.maintenance,branches:STATE.branches})); }
+  catch(e){ console.warn('Storage full or unavailable'); }
+}
+function loadLocal(){
+  try {
+    const d=localStorage.getItem('hms_data');
+    if(d){ const pd=JSON.parse(d); ['guests','rooms','bookings','payments','staff','housekeeping','maintenance','branches'].forEach(k=>{ if(pd[k]?.length>0) STATE[k]=pd[k]; }); }
+  } catch(e){}
+}
+
+// ================================================================ UNDO / REDO ================================================================
+const UndoRedo = {
+  stack: [], redoStack: [], maxSize: 30,
+  push(snapshot, label) {
+    this.stack.push({ snapshot: JSON.stringify(snapshot), label });
+    if (this.stack.length > this.maxSize) this.stack.shift();
+    this.redoStack = [];
+  },
+  undo() {
+    if (!this.stack.length) { toast('Nothing to undo', 'warning'); return; }
+    const current = JSON.stringify({ bookings: STATE.bookings, rooms: STATE.rooms, housekeeping: STATE.housekeeping, maintenance: STATE.maintenance, payments: STATE.payments });
+    const entry = this.stack.pop();
+    this.redoStack.push({ snapshot: current, label: entry.label });
+    const s = JSON.parse(entry.snapshot);
+    Object.assign(STATE, s);
+    toast(`Undone: ${entry.label}`, 'info');
+    renderPage(getCurrentPage());
+    updateBadges();
+  },
+  redo() {
+    if (!this.redoStack.length) { toast('Nothing to redo', 'warning'); return; }
+    const entry = this.redoStack.pop();
+    this.stack.push({ snapshot: JSON.stringify({ bookings: STATE.bookings, rooms: STATE.rooms, housekeeping: STATE.housekeeping, maintenance: STATE.maintenance, payments: STATE.payments }), label: entry.label });
+    const s = JSON.parse(entry.snapshot);
+    Object.assign(STATE, s);
+    toast(`Redone: ${entry.label}`, 'info');
+    renderPage(getCurrentPage());
+    updateBadges();
+  },
+  snapshot(label) {
+    this.push({ bookings: JSON.parse(JSON.stringify(STATE.bookings)), rooms: JSON.parse(JSON.stringify(STATE.rooms)), housekeeping: JSON.parse(JSON.stringify(STATE.housekeeping)), maintenance: JSON.parse(JSON.stringify(STATE.maintenance)), payments: JSON.parse(JSON.stringify(STATE.payments)) }, label);
+  }
+};
+
+// Undo snapshots are taken directly inside createBooking/doCheckin/doCheckout/cancelBooking (added inline above)
+
+// ================================================================ COMMAND PALETTE ================================================================
+const COMMANDS = [
+  { label: 'Go to Dashboard', icon: '📊', action: () => showPage('dashboard') },
+  { label: 'Go to Bookings', icon: '📅', action: () => showPage('bookings') },
+  { label: 'Go to Check-in', icon: '✅', action: () => showPage('checkin') },
+  { label: 'Go to Check-out', icon: '🚪', action: () => showPage('checkout') },
+  { label: 'Go to Rooms', icon: '🛏️', action: () => showPage('rooms') },
+  { label: 'Go to Housekeeping', icon: '🧹', action: () => showPage('housekeeping') },
+  { label: 'Go to Maintenance', icon: '🔧', action: () => showPage('maintenance') },
+  { label: 'Go to Billing', icon: '💳', action: () => showPage('billing') },
+  { label: 'Go to Guests / CRM', icon: '👥', action: () => showPage('guests') },
+  { label: 'Go to Staff', icon: '👔', action: () => showPage('staff') },
+  { label: 'Go to Revenue', icon: '📈', action: () => showPage('revenue') },
+  { label: 'Go to Branches', icon: '🏢', action: () => showPage('branches') },
+  { label: 'Go to Audit Log', icon: '📋', action: () => showPage('audit') },
+  { label: 'Go to Settings', icon: '⚙️', action: () => showPage('settings') },
+  { label: 'New Booking', icon: '➕', action: () => showModal('newBookingModal') },
+  { label: 'Add Guest', icon: '👤', action: () => showModal('newGuestModal') },
+  { label: 'Add Staff', icon: '👔', action: () => showModal('newStaffModal') },
+  { label: 'New Maintenance Ticket', icon: '🔧', action: () => showModal('newMaintModal') },
+  { label: 'Assign Housekeeping Task', icon: '🧹', action: () => showModal('newHKModal') },
+  { label: 'Add Room', icon: '🛏️', action: () => showModal('addRoomModal') },
+  { label: 'Undo Last Action', icon: '↩️', action: () => UndoRedo.undo() },
+  { label: 'Redo Last Action', icon: '↪️', action: () => UndoRedo.redo() },
+  { label: 'Refresh Dashboard', icon: '↻', action: () => { showPage('dashboard'); toast('Dashboard refreshed', 'info'); } },
+  { label: 'Switch to Grand Palace', icon: '🏨', action: () => switchBranch('grand') },
+  { label: 'Switch to Lake View Resort', icon: '🏨', action: () => switchBranch('lake') },
+  { label: 'Switch to City Centre Hotel', icon: '🏨', action: () => switchBranch('city') },
+  { label: 'Logout', icon: '🚪', action: () => doLogout() },
+  { label: 'WhatsApp Support', icon: '💬', action: () => window.open('https://wa.me/256703953711', '_blank') },
+  { label: 'Search…', icon: '🔍', action: () => openSearch() },
+];
+
+let cmdIdx = 0;
+function openCommandPalette() {
+  let el = document.getElementById('cmdPalette');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'cmdPalette';
+    el.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:3000;display:flex;align-items:flex-start;justify-content:center;padding-top:100px;backdrop-filter:blur(6px)';
+    el.innerHTML = `
+      <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius2);width:580px;max-width:95vw;overflow:hidden;box-shadow:var(--shadow)" onclick="event.stopPropagation()">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border)">
+          <span style="font-size:16px">⌘</span>
+          <input id="cmdInput" type="text" placeholder="Type a command…" oninput="filterCommands(this.value)" onkeydown="cmdKeyNav(event)"
+            style="flex:1;background:none;border:none;outline:none;font-size:15px;color:var(--text)">
+          <span style="font-size:11px;color:var(--text3);cursor:pointer" onclick="closeCommandPalette()">ESC</span>
+        </div>
+        <div id="cmdList" style="max-height:380px;overflow-y:auto;padding:8px"></div>
+      </div>`;
+    el.addEventListener('click', e => { if (e.target === el) closeCommandPalette(); });
+    document.body.appendChild(el);
+  }
+  cmdIdx = 0;
+  filterCommands('');
+  el.style.display = 'flex';
+  setTimeout(() => document.getElementById('cmdInput')?.focus(), 50);
+}
+
+function closeCommandPalette() {
+  const el = document.getElementById('cmdPalette');
+  if (el) { el.style.display = 'none'; document.getElementById('cmdInput').value = ''; }
+}
+
+function filterCommands(q) {
+  const filtered = q ? COMMANDS.filter(c => c.label.toLowerCase().includes(q.toLowerCase())) : COMMANDS;
+  cmdIdx = 0;
+  document.getElementById('cmdList').innerHTML = filtered.length === 0
+    ? '<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">No commands found</div>'
+    : filtered.map((c, i) => `
+      <div class="cmd-item ${i === 0 ? 'cmd-active' : ''}" data-idx="${i}"
+        onclick="runCommand(${COMMANDS.indexOf(c)})"
+        style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:var(--radius);cursor:pointer;transition:.15s;${i === 0 ? 'background:rgba(79,142,247,0.12);' : ''}">
+        <span style="font-size:16px;width:24px;text-align:center">${c.icon}</span>
+        <span style="font-size:13px;font-weight:600;color:var(--text)">${c.label}</span>
+      </div>`).join('');
+}
+
+function cmdKeyNav(e) {
+  const items = document.querySelectorAll('#cmdList .cmd-item');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); cmdIdx = Math.min(cmdIdx + 1, items.length - 1); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); cmdIdx = Math.max(cmdIdx - 1, 0); }
+  if (e.key === 'Enter') {
+    const q = document.getElementById('cmdInput').value;
+    const filtered = q ? COMMANDS.filter(c => c.label.toLowerCase().includes(q.toLowerCase())) : COMMANDS;
+    if (filtered[cmdIdx]) { runCommand(COMMANDS.indexOf(filtered[cmdIdx])); }
+    return;
+  }
+  items.forEach((el, i) => { el.style.background = i === cmdIdx ? 'rgba(79,142,247,0.12)' : ''; el.classList.toggle('cmd-active', i === cmdIdx); });
+  items[cmdIdx]?.scrollIntoView({ block: 'nearest' });
+}
+
+function runCommand(idx) {
+  if (COMMANDS[idx]) { closeCommandPalette(); COMMANDS[idx].action(); }
+}
+
+// ================================================================ DRAG & DROP ROOMS ================================================================
+function enableRoomDragDrop() {
+  const grid = document.getElementById('roomsGrid');
+  if (!grid) return;
+  let draggedId = null;
+  grid.addEventListener('dragstart', e => {
+    const card = e.target.closest('.room-card');
+    if (card) { draggedId = card.dataset.roomId; e.dataTransfer.effectAllowed = 'move'; card.style.opacity = '0.5'; }
+  });
+  grid.addEventListener('dragend', e => {
+    const card = e.target.closest('.room-card');
+    if (card) card.style.opacity = '';
+    draggedId = null;
+  });
+  grid.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+  grid.addEventListener('drop', e => {
+    e.preventDefault();
+    const target = e.target.closest('.room-card');
+    if (!target || target.dataset.roomId === draggedId) return;
+    const fromIdx = STATE.rooms.findIndex(r => r.id === draggedId);
+    const toIdx = STATE.rooms.findIndex(r => r.id === target.dataset.roomId);
+    if (fromIdx < 0 || toIdx < 0) return;
+    const [moved] = STATE.rooms.splice(fromIdx, 1);
+    STATE.rooms.splice(toIdx, 0, moved);
+    renderRooms();
+    toast('Room order updated', 'info');
+  });
+}
+
+// renderRooms (defined earlier) already includes draggable attributes and calls enableRoomDragDrop()
+
+// ================================================================ OFFLINE / ONLINE INDICATOR ================================================================
+function setupOfflineMode() {
+  let offlineBar = null;
+  const pendingQueue = [];
+
+  function showOfflineBar() {
+    if (offlineBar) return;
+    offlineBar = document.createElement('div');
+    offlineBar.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a2e;border:1px solid var(--orange);border-radius:var(--radius);padding:10px 20px;z-index:9000;display:flex;align-items:center;gap:10px;font-size:13px;box-shadow:var(--shadow)';
+    offlineBar.innerHTML = '<span style="color:var(--orange)">📵</span><span style="color:var(--text)">You are offline. Changes will sync when reconnected.</span><span style="color:var(--text3);font-size:11px" id="pendingCount"></span>';
+    document.body.appendChild(offlineBar);
+  }
+
+  function hideOfflineBar() {
+    if (offlineBar) { offlineBar.remove(); offlineBar = null; }
+    if (pendingQueue.length) {
+      toast(`✅ Back online. ${pendingQueue.length} action(s) synced.`, 'success');
+      pendingQueue.length = 0;
+    }
+  }
+
+  window.addEventListener('offline', () => { showOfflineBar(); toast('You are now offline', 'warning'); });
+  window.addEventListener('online', () => { hideOfflineBar(); toast('Connection restored', 'success'); saveLocal(); });
+
+  if (!navigator.onLine) showOfflineBar();
+}
+
+// ================================================================ SESSION TIMEOUT ================================================================
+let sessionTimer, sessionWarnTimer;
+function resetSessionTimer() {
+  clearTimeout(sessionTimer); clearTimeout(sessionWarnTimer);
+  if (!STATE.currentUser) return;
+  sessionWarnTimer = setTimeout(() => {
+    if (STATE.currentUser) toast('⚠️ Session expiring in 5 minutes due to inactivity', 'warning');
+  }, 25 * 60 * 1000);
+  sessionTimer = setTimeout(() => {
+    if (STATE.currentUser) { toast('Session expired. Please log in again.', 'warning'); setTimeout(doLogout, 1500); }
+  }, 30 * 60 * 1000);
+}
+['click', 'keydown', 'mousemove'].forEach(ev => document.addEventListener(ev, resetSessionTimer, { passive: true }));
+
+// ================================================================ DYNAMIC PRICING BADGE ================================================================
+function applyPricingBadge(price, checkin, nights, isVip) {
+  let finalPrice = price;
+  const ciDate = new Date(checkin);
+  const dayOfWeek = ciDate.getDay();
+  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+  if (isWeekend && STATE.pricingRules.find(r => r.type.includes('Weekend') && r.active)) {
+    finalPrice *= 1.2;
+  }
+  if (nights >= 7 && STATE.pricingRules.find(r => r.type.includes('Long Stay') && r.active)) {
+    finalPrice *= 0.85;
+  }
+  if (isVip && STATE.pricingRules.find(r => r.type.includes('VIP') && r.active)) {
+    finalPrice *= 0.9;
+  }
+  return Math.round(finalPrice);
+}
+
+// ================================================================ REVENUE SIMULATION ================================================================
+function simulateRevenueAccrual() {
+  setInterval(() => {
+    const activeBookings = STATE.bookings.filter(b => b.status === 'checked_in' && b.branch === STATE.currentBranch);
+    activeBookings.forEach(b => {
+      const r = getRoom(b.roomId);
+      if (r) {
+        const hourlyRate = r.price / 24;
+        STATE.payments.push({
+          id: `PAY${Date.now()}_${b.id}`, bookingId: b.id,
+          amount: Math.round(hourlyRate), method: 'Accrual',
+          status: 'accrued', timestamp: new Date().toISOString(), branch: STATE.currentBranch
+        });
+      }
+    });
+    if (document.getElementById('page-revenue').classList.contains('active')) renderRevenue();
+  }, 60000);
+}
+
+// ================================================================ PRINT / EXPORT SIMULATION ================================================================
+function simulatePrint() {
+  toast('📄 Preparing document for print…', 'info');
+  setTimeout(() => {
+    toast('✅ Document ready. Opening print dialog…', 'success');
+    window.print();
+  }, 800);
+}
+
+// ================================================================ ENHANCED EMAIL SIMULATION ================================================================
+function sendSimulatedEmail(type, bookingId) {
+  const bk = STATE.bookings.find(b => b.id === bookingId);
+  if (!bk) return;
+  const g = getGuest(bk.guestId);
+  const msgs = {
+    booking: `Booking confirmation email sent to ${g?.email}`,
+    invoice: `Invoice emailed to ${g?.email}`,
+    reminder: `Reminder email sent to ${g?.email}`
+  };
+  toast(`📧 ${msgs[type] || 'Email sent'}`, 'success');
+  addAudit(STATE.currentUser?.name || 'System', 'email_sent', 'Billing', `${type} to ${g?.email}`, '', '', bookingId);
+}
+
+// ================================================================ LOYALTY SYSTEM ================================================================
+function redeemLoyaltyPoints(guestId, points) {
+  const g = STATE.guests.find(x => x.id === guestId);
+  if (!g) return 0;
+  if (g.loyaltyPoints < points) { toast('Insufficient loyalty points', 'error'); return 0; }
+  const discount = Math.round(points * 10);
+  g.loyaltyPoints -= points;
+  toast(`✅ Redeemed ${fmt(points)} pts = UGX ${fmt(discount)} discount`, 'success');
+  addAudit(STATE.currentUser?.name || 'System', 'loyalty_redeemed', 'CRM', `${points} pts by ${g.firstName}`, '', '', guestId);
+  return discount;
+}
+
+// ================================================================ ROOM QUICK ACTIONS (from any context) ================================================================
+function quickRoomAction(roomNum, action) {
+  const r = STATE.rooms.find(x => x.number === roomNum && x.branch === STATE.currentBranch);
+  if (!r) { toast(`Room ${roomNum} not found`, 'error'); return; }
+  const actions = {
+    clean: () => { r.status = 'cleaning'; toast(`Room ${roomNum} sent for cleaning`, 'info'); },
+    available: () => { r.status = 'available'; toast(`Room ${roomNum} marked available ✓`, 'success'); },
+    maintenance: () => { r.status = 'maintenance'; toast(`Room ${roomNum} under maintenance`, 'warning'); },
+    oos: () => { r.status = 'out-of-service'; toast(`Room ${roomNum} out of service`, 'error'); }
+  };
+  if (actions[action]) { actions[action](); renderPage(getCurrentPage()); saveLocal(); }
+}
+
+// ================================================================ BULK OPERATIONS ================================================================
+function bulkCleanCheckoutRooms() {
+  const cleaningRooms = STATE.rooms.filter(r => r.status === 'cleaning' && r.branch === STATE.currentBranch);
+  if (!cleaningRooms.length) { toast('No rooms in cleaning status', 'info'); return; }
+  cleaningRooms.forEach(r => { r.status = 'available'; r.lastCleaned = new Date().toISOString(); });
+  toast(`✅ ${cleaningRooms.length} rooms marked available`, 'success');
+  renderPage(getCurrentPage());
+  updateBadges();
+  saveLocal();
+}
+
+// ================================================================ KEYBOARD ================================================================
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'p') { e.preventDefault(); openCommandPalette(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); UndoRedo.undo(); }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'Z') { e.preventDefault(); UndoRedo.redo(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'b') { e.preventDefault(); showModal('newBookingModal'); }
+  if (e.key === 'Escape') {
+    closeSearch();
+    closeCommandPalette();
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+    document.getElementById('notifPanel').classList.remove('open');
+  }
+  if (e.key === '?' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) {
+    openCommandPalette();
+  }
+});
+
+// ================================================================ KEYBOARD SHORTCUT HINT ================================================================
+function injectShortcutHint() {
+  const hint = document.createElement('div');
+  hint.style.cssText = 'position:fixed;bottom:24px;left:24px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 14px;font-size:11px;color:var(--text3);z-index:400;pointer-events:none;opacity:0.8';
+  hint.innerHTML = '<kbd style="background:var(--surface3);padding:2px 5px;border-radius:4px;font-size:10px">Ctrl+P</kbd> Commands &nbsp;·&nbsp; <kbd style="background:var(--surface3);padding:2px 5px;border-radius:4px;font-size:10px">Ctrl+K</kbd> Search &nbsp;·&nbsp; <kbd style="background:var(--surface3);padding:2px 5px;border-radius:4px;font-size:10px">Ctrl+B</kbd> New Booking &nbsp;·&nbsp; <kbd style="background:var(--surface3);padding:2px 5px;border-radius:4px;font-size:10px">Ctrl+Z</kbd> Undo';
+  document.body.appendChild(hint);
+  setTimeout(() => { hint.style.transition = 'opacity 1s'; hint.style.opacity = '0'; setTimeout(() => hint.remove(), 1000); }, 6000);
+}
+
+// ================================================================ CONTEXTUAL LIVE COUNTER ================================================================
+function startLiveCounters() {
+  setInterval(() => {
+    const timeEl = document.getElementById('sysClock');
+    if (timeEl) timeEl.textContent = new Date().toLocaleTimeString();
+    updateBadges();
+  }, 1000);
+}
+
+// Note: mobile sidebar toggling is now handled by the topbar hamburger button (toggleSidebar/closeSidebar),
+// which correctly uses the .sidebar.open drawer pattern instead of inline style toggling.
+
+// ================================================================ INIT ================================================================
+seedData();
+loadLocal();
+setupOfflineMode();
+
+// Auto-restore session
+const sess = localStorage.getItem('hms_session');
+if (sess) {
+  try {
+    const s = JSON.parse(sess);
+    if (Date.now() - s.ts < 28800000) {
+      STATE.currentUser = s.user;
+      STATE.currentBranch = s.branch;
+      bootApp();
+    }
+  } catch (e) {}
+}
+</script>
+
+<!-- COMMAND PALETTE TRIGGER BUTTON (mobile) -->
+<style>
+#cmdPaletteBtn {
+  position:fixed; bottom:140px; right:24px; width:44px; height:44px;
+  border-radius:50%; background:var(--surface2); border:1px solid var(--border2);
+  color:var(--text2); font-size:18px; cursor:pointer; z-index:400;
+  display:none; align-items:center; justify-content:center; box-shadow:var(--shadow);
+}
+@media (max-width:900px) { #cmdPaletteBtn { display:flex; } }
+kbd { font-family:inherit; }
+.cmd-item:hover { background:rgba(79,142,247,0.08) !important; }
+</style>
+<button id="cmdPaletteBtn" onclick="openCommandPalette()" title="Command Palette">⌘</button>
+</body>
+</html>
